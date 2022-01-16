@@ -17,7 +17,7 @@ from django_apscheduler.models import DjangoJobExecution
 # import datetime
 
 # ******* Models **********
-from podcasts.models import Episode
+from podcasts.models import Episode, NewsItem
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ def save_new_episodes(feed):
 
     for item in feed.entries:
         if not Episode.objects.filter(guid=item.guid).exists():
-            episode = Episode(
+            episode = NewsItem(
                 title=item.title,
                 description=item.description,
                 pub_date=parser.parse(item.published),
@@ -48,7 +48,31 @@ def save_new_episodes(feed):
                 guid=item.guid,
             )
             episode.save()
+# *** Functions to load news feed *****
+def save_new_news_items(feed):
+    """Saves new news items to the database.
 
+    Checks the news_item GUID against the episodes currently stored in the
+    database. If not found, then a new `Episode` is added to the database.
+
+    Args:
+        feed: requires a feedparser object
+    """
+    source_title = feed.channel.title
+
+    for item in feed.entries:
+        if not NewsItem.objects.filter(guid=item.guid).exists():
+            newsitem = NewsItem(
+                source_name= source_title,
+                title=item.title,
+                description=item.description,
+                pub_date=parser.parse(item.published),
+                link=item.link,
+                guid=item.guid,
+            )
+            newsitem.save()
+
+# The **** fetch functions to be scheduled for each feed ******
 def fetch_realpython_episodes():
     """Fetches new episodes from RSS for The Real Python Podcast."""
     _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
@@ -58,6 +82,11 @@ def fetch_talkpython_episodes():
     """Fetches new episodes from RSS for the Talk Python to Me Podcast."""
     _feed = feedparser.parse(requests.get("https://talkpython.fm/episodes/rss", headers={'User-Agent': 'Mozilla/5.0'}).content)
     save_new_episodes(_feed)
+
+def fetch_scaledagilefrmework_news_items():
+    """Fetches new episodes from RSS for the Scale Agile Framework RSS feed"""
+    _feed = feedparser.parse(requests.get("http://www.scaledagileframework.com/feed/", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    save_new_news_items(_feed)
 
 def delete_old_job_executions(max_age=604_800):
     """Deletes all apscheduler job execution logs older than `max_age`."""
@@ -77,6 +106,9 @@ def handle(self, *args, **options):
     )
     logger.info("Added job: The Real Python Podcast.")
 
+
+
+# ***********************  Set up command functino call *****
 class Command(BaseCommand):
     help = "Runs apscheduler."
 
@@ -103,6 +135,16 @@ class Command(BaseCommand):
             replace_existing=True,
         )
         logger.info("Added job: Talk Python Feed.")
+
+        scheduler.add_job(
+            fetch_scaledagilefrmework_news_items,
+            trigger="interval",
+            minutes=60,
+            id="Scaled Agile Framework Feed",
+            max_instances=1,
+            replace_existing=True,
+        )
+        logger.info("Added job: Scaled Agile Framework Feed.")
 
         scheduler.add_job(
             delete_old_job_executions,

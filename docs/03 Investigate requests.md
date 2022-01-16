@@ -1,4 +1,4 @@
-# Investigation of web scrparing
+# Investigation of web scraping
 
 - [link to request library overview](https://realpython.com/python-requests/)
 - [Link to parse RSS feed with Beautiful Soup](https://towardsdatascience.com/rss-feed-parser-in-python-553b1857055c)

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+
+
+      <div class="row">
+        <div class="col">
+          {% for newsitem in newsitems %}
+          <section class="card mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-2 my-auto">
+                <img
+                  src="{{ newsitem.image }}"
+                  class="img-fluid ml-3 my-3"
+                  alt="{{ image.source_name }}"
+                />
+              </div>
+              <div class="col-md-10">
+                <div class="card-body ml-3">
+                  <h3 class="card-title">{{ newsitem.title }}</h3>
+                  <p class="card-text">{{ newsitem.description }}</p>
+                  <a href="{{ newsitem.link }}">
+                    <p class="card-text">🎧 Read this item</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+          {% endfor %}
+        </div>
+      </div>
+
+{% endblock content %}
+
+

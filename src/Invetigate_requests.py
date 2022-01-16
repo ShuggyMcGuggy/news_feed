@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from bs4 import SoupStrainer
 
 import feedparser
-# from podcasts.models import Episode
+#from podcasts.models import NewsItem
+
 
 
 
@@ -18,13 +19,33 @@ url_india = "https://feeds.bcast.fm/the-tastes-of-india"
 url_4 ='http://www.reddit.com/r/python/.rss'
 url_agile = 'http://www.scaledagileframework.com/feed/'
 
-feed = feedparser.parse(requests.get(url_pods, headers={'User-Agent': 'Mozilla/5.0'}).content)
-podcast_title = feed.channel.title
-podcast_image = feed.channel.image["href"]
+def read_podcasts(url_link):
+    feed = feedparser.parse(requests.get(url_link, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    podcast_title = feed.channel.title
+    podcast_image = feed.channel.image["href"]
 
-for item in feed.entries:
-    print("Title : " + item.title)
-    print("GUID: " + item.guid)
+    for item in feed.entries:
+        print("Title : " + item.title)
+        print("GUID: " + item.guid)
+
+def explore_feed(url_link):
+    feed = feedparser.parse(requests.get(url_link, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    if feed:
+        for item in feed.entries[:1]:
+            print('Title: ' + item.title)
+            print('Link: ' + item.link)
+            print('Comments: ' + item.comments)
+            print('Pub Date: ' + item.published)
+
+    else:
+        print("Nothing found in feed", url)
+
+
+# *******  Main  *****
+# read_podcasts(url_pods)
+
+explore_feed(url_agile)
+
 
 # for item in feed.entries:
 #     if not Episode.objects.filter(guid=item.guid).exists():
@@ -38,13 +59,7 @@ for item in feed.entries:
 #             guid=item.guid,
 #         )
 
-# feed = feedparser.parse(requests.get(url_4))
-# if feed:
-#     for item in feed["items"]:
-#         link = item["link"]
-#         print(link)
-# else:
-#     print("Nothing found in feed", url)
+
 
 # feed = feedparser.parse(requests.get(url_pods, headers={'User-Agent': 'Mozilla/5.0'}).content)
 #

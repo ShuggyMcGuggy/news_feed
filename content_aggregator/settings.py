@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     "django_apscheduler",
+    'bootstrap3'
 ]
 
 MIDDLEWARE = [
