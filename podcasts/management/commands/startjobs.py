@@ -38,7 +38,7 @@ def save_new_episodes(feed):
 
     for item in feed.entries:
         if not Episode.objects.filter(guid=item.guid).exists():
-            episode = NewsItem(
+            episode = Episode(
                 title=item.title,
                 description=item.description,
                 pub_date=parser.parse(item.published),
@@ -119,7 +119,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_realpython_episodes,
             trigger="interval",
-            minutes=60,
+            minutes=2,
             id="The Real Python Podcast",
             max_instances=1,
             replace_existing=True,
@@ -129,7 +129,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_talkpython_episodes,
             trigger="interval",
-            minutes=60,
+            minutes=2,
             id="Talk Python Feed",
             max_instances=1,
             replace_existing=True,
@@ -139,7 +139,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_scaledagilefrmework_news_items,
             trigger="interval",
-            minutes=60,
+            minutes=2,
             id="Scaled Agile Framework Feed",
             max_instances=1,
             replace_existing=True,
