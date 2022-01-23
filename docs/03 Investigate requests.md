@@ -8,3 +8,17 @@
 - [top 70 RSS feeds for Agile](https://blog.feedspot.com/agile_rss_feeds/)
 - [top 15 agile RSS feeds](https://eztoolset.com/top-rss/15-top-agile-software-development-rss-feeds-in-2020/)
 - [Top Risk Management RSS Feeds](https://eztoolset.com/top-rss/15-top-risk-management-rss-feeds-to-follow-in-2020/)
+
+https://www.agilealliance.org/feed
+https://www.mountaingoatsoftware.com/blog/rss
+https://www.leadingagile.com/blog/feed/
+https://www.scrum.org/resources/blog/rss.xml
+https://age-of-product.com/feed/
+https://blog.gitscrum.com/feed/
+https://www.agil8.com/feed/
+https://www.scrumexpert.com/feed/
+https://www.101ways.com/feed/
+
+
+
+

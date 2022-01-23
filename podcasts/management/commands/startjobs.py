@@ -88,6 +88,11 @@ def fetch_scaledagilefrmework_news_items():
     _feed = feedparser.parse(requests.get("http://www.scaledagileframework.com/feed/", headers={'User-Agent': 'Mozilla/5.0'}).content)
     save_new_news_items(_feed)
 
+def fetch_101ways_news_items():
+    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+    _feed = feedparser.parse(requests.get("https://www.101ways.com/feed/", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    save_new_news_items(_feed)
+
 def delete_old_job_executions(max_age=604_800):
     """Deletes all apscheduler job execution logs older than `max_age`."""
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
@@ -119,7 +124,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_realpython_episodes,
             trigger="interval",
-            minutes=2,
+            minutes=60,
             id="The Real Python Podcast",
             max_instances=1,
             replace_existing=True,
@@ -129,7 +134,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_talkpython_episodes,
             trigger="interval",
-            minutes=2,
+            minutes=60,
             id="Talk Python Feed",
             max_instances=1,
             replace_existing=True,
@@ -139,12 +144,22 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_scaledagilefrmework_news_items,
             trigger="interval",
-            minutes=2,
+            minutes=60,
             id="Scaled Agile Framework Feed",
             max_instances=1,
             replace_existing=True,
         )
         logger.info("Added job: Scaled Agile Framework Feed.")
+
+        scheduler.add_job(
+            fetch_101ways_news_items,
+            trigger="interval",
+            minutes=60,
+            id="101 Ways  Feed",
+            max_instances=1,
+            replace_existing=True,
+        )
+        logger.info("Added job: 101 Waya Feed.")
 
         scheduler.add_job(
             delete_old_job_executions,

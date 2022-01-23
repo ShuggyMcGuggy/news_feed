@@ -32,7 +32,7 @@ class Status(models.Model):
         verbose_name_plural = 'statuses'
 
     def __str__(self) -> str:
-        return f"{self.state}: {self.description}"
+        return f"{self.state}"
 
 class NewsItem(models.Model):
     source_name = models.CharField(max_length=100, default=' ')

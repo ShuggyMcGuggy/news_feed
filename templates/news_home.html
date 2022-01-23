@@ -20,8 +20,16 @@
               </div>
               <div class="col-md-10">
                 <div class="card-body ml-3">
-                  <h3 class="card-title">{{ newsitem.title }}</h3>
-                  <p class="card-text">{{ newsitem.description }}</p>
+                  <h3 class="card-item-link" ><a href="{% url 'podcasts:news_item' newsitem.id %}">{{ newsitem.title }}</a></h3>
+                  <h4 class="card-item-source">Source: {{ newsitem.source_name }}</h4>
+                  <h4 class="card-item-status">Status: {{ newsitem.status }}</h4>
+
+                  <p class="card-text">
+                    {% autoescape off %}
+                    {{ newsitem.description }}
+                    {% endautoescape %}
+                  </p>
+
                   <a href="{{ newsitem.link }}">
                     <p class="card-text">🎧 Read this item</p>
                   </a>

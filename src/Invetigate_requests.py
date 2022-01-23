@@ -19,12 +19,20 @@ url_india = "https://feeds.bcast.fm/the-tastes-of-india"
 url_4 ='http://www.reddit.com/r/python/.rss'
 url_agile = 'http://www.scaledagileframework.com/feed/'
 
+l_urls_rss_feeds =['https://www.agilealliance.org/feed',
+    'https://blog.gitscrum.com/feed/',
+    'https://www.agil8.com/feed/',
+    'https://www.scrumexpert.com/feed/',
+    'https://www.101ways.com/feed/'
+    ]
+
 def read_podcasts(url_link):
     feed = feedparser.parse(requests.get(url_link, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    print('URL Link: ' + url_link)
     podcast_title = feed.channel.title
-    podcast_image = feed.channel.image["href"]
+    #podcast_image = feed.channel.image["href"]
 
-    for item in feed.entries:
+    for item in feed.entries[:1]:
         print("Title : " + item.title)
         print("GUID: " + item.guid)
 
@@ -41,10 +49,15 @@ def explore_feed(url_link):
         print("Nothing found in feed", url)
 
 
+
+
+
 # *******  Main  *****
 # read_podcasts(url_pods)
 
 explore_feed(url_agile)
+for url_feed in l_urls_rss_feeds:
+    read_podcasts(url_feed)
 
 
 # for item in feed.entries:

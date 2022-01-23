@@ -2,8 +2,22 @@
 
 {% block content %}
 
-<p> News Item: {{ news_item }}</p>
+<h3> News Item: {{ news_item.title }}</h3>
+<p> <h3> Status: {{ news_item.status }} </h3></p>
+<p>
+    {% autoescape off %}
+    {{ news_item.description }}
+    {% endautoescape %}
+</p>
+<h3>  Comment </h3>
+<p> {% autoescape off %}
+    {{ news_item.comment }}
+    {% endautoescape %}
+</p>
+<a href="{{ news_item.link}}">Link to News Item</a>
+<p>
+    <a href="{% url 'podcasts:edit_news_item' news_item.id %}">edit entry</a>
+</p>
 
-<p> news_item.title</p>
 
 {% endblock content %}

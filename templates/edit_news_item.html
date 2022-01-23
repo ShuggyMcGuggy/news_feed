@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+<p><a href="{% url 'podcasts:news_item' news_item.id %}">{{ news_item.title }}</a></p>
+<p> Edit News Item</p>
+
+<form action="{% url 'podcasts:edit_news_item' news_item.id %}" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">save changes</button>
+
+</form>
+
+{% endblock content %}
