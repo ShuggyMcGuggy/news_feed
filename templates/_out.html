@@ -1,0 +1,50 @@
+{% extends "base_static.html" %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+
+
+      <div class="row">
+        <div class="col">
+          {% for news_item in news_items %}
+          <section class="card mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-2 my-auto">
+                <img
+                  src="{{ newsitem.image }}"
+                  class="img-fluid ml-3 my-3"
+                  alt="{{ image.source_name }}"
+                />
+              </div>
+              <div class="col-md-10">
+                <div class="card-body ml-3">
+                 <h3 class="card--link" ><a href="{% url 'podcasts:news_item' news_item.id %}">{{ news_item.title }}</a></h3>
+                  <h4> Comment</h4>
+                    {% autoescape off %}
+                  <p>{{news_item.comment}}</p>
+                    {% endautoescape %}
+                  <h5 class="card-item-source">Source: {{ news_item.source_name }} :  Pub Date: {{ news_item.pub_date }}</h5>
+                  <h5 class="card-item-status">Status: {{ news_item.status }}</h5>
+
+                  <p class="card-text">
+                    {% autoescape off %}
+                    {{ news_item.description }}
+                    {% endautoescape %}
+                  </p>
+
+                  <a href="{{ news_item.link }}">
+                    <p class="card-text">🎧 Read this item</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+          {% endfor %}
+        </div>
+      </div>
+
+{% endblock content %}
+
+

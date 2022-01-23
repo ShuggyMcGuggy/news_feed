@@ -29,11 +29,6 @@ class NewsView(ListView):
         context = super().get_context_data(**kwargs)
         #context["newsitems"] = NewsItem.objects.filter(status=3).order_by("-pub_date")[:10]
         context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
-        data = render(request, 'news_item.html', context)
-        if b_is_saved_as_static:
-            content = render_to_string('news_item.html', context)
-            with open('your-list.html', 'w') as static_file:
-                static_file.write(content)
         return context
 
 # class NewsItemView(ListView):
@@ -46,9 +41,17 @@ class NewsView(ListView):
 #         context["newsitem"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
 #         return context
 
-# def news_list_static(request):
-#     """ Show all the news items tagged to publish"""
-#     news_items = news_item.objects.order_by("-pub_date")[:10]
+def news_list_static(request):
+    """ Show all the news items tagged to publish"""
+    b_is_saved_as_static = True
+    news_items = NewsItem.objects.order_by("-pub_date")[:10]
+    context = {'news_items': news_items}
+    # context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
+    if b_is_saved_as_static:
+        content = render_to_string('news_list_static_out.html', context)
+        with open('your_list.html', 'w') as static_file:
+            static_file.write(content)
+    return render(request, 'news_list_static.html', context)
 
 
 def news_item(request, news_item_id='1'):

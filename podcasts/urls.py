@@ -13,7 +13,7 @@ urlpatterns = [
     path('news/', NewsView.as_view(), name='news'),
 
     # Show all news items and enable page to to saved to static HTML page
-    # url(r'^news_list_static/$', views.news_list_static, name='news_list_static'),
+    url(r'^news_list_static/$', views.news_list_static, name='news_list_static'),
 
     # Detail page for a single news item
     url(r'^news_item/(?P<news_item_id>\d+)/$', views.news_item, name='news_item'),
