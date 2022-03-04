@@ -28,7 +28,7 @@ class NewsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         #context["newsitems"] = NewsItem.objects.filter(status=3).order_by("-pub_date")[:10]
-        context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
+        context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:20]
         return context
 
 # class NewsItemView(ListView):
@@ -43,9 +43,29 @@ class NewsView(ListView):
 
 def news_list_static(request):
     """ Show all the news items tagged to publish"""
+
     b_is_saved_as_static = True
-    news_items = NewsItem.objects.order_by("-pub_date")[:10]
+    # filter the list by status of 3 ==
+    news_items = NewsItem.objects.filter(status=3).order_by("-pub_date")[:10]
+
     context = {'news_items': news_items}
+    # context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
+    if b_is_saved_as_static:
+        content = render_to_string('news_list_static.html', context)
+        with open('your_list.html', 'w') as static_file:
+            static_file.write(content)
+    return render(request, 'news_list_static.html', context)
+
+# **************************
+# New new item list ready for publishing with stars
+def news_list_star_rating(request):
+    """ Show all the news items tagged to publish"""
+
+    b_is_saved_as_static = True
+    # filter the list by status of 3 ==
+    news_items = NewsItem.objects.filter(status=3).order_by("-pub_date")[:10]
+    context = {'news_items': news_items,
+               }
     # context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
     if b_is_saved_as_static:
         content = render_to_string('news_list_static_out.html', context)
@@ -54,6 +74,7 @@ def news_list_static(request):
     return render(request, 'news_list_static.html', context)
 
 
+# **************************
 def news_item(request, news_item_id='1'):
     """ Show a single news item"""
     b_is_saved_as_static = True
@@ -92,5 +113,6 @@ def edit_news_item(request, news_item_id='1'):
             return HttpResponseRedirect(reverse('podcasts:news_item', args=[news_item.id]))
 
 
-    context = {'news_item': news_item, 'form': form}
+    context = {'news_item': news_item,
+               'form': form}
     return render(request, 'edit_news_item.html', context)

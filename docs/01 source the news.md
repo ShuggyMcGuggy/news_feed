@@ -31,7 +31,7 @@ So, let's start with first step.
 - [Scraping news from google news](https://medium.com/analytics-vidhya/google-scraping-using-beautifulsoup-d53746ef5a32)
 
 
-#Building the website scrapper
+#Building the website scraper
 Before we start building scrapper, let's get the required packages first. You can install them from command prompt by these commads.
 
 <code>pip install bs4</code><br>

@@ -23,6 +23,17 @@ logger = logging.getLogger(__name__)
 
 
 url_pods = "https://realpython.com/podcasts/rpp/feed"
+url_scaled_agile = "http://www.scaledagileframework.com/feed/"
+url_101ways = "https://www.101ways.com/feed/"
+url_agile_alliance = "https://www.agilealliance.org/feed"
+url_leadinagile = "https://www.leadingagile.com/blog/feed/"
+
+
+l_urls_rss_feeds =['https://www.agilealliance.org/feed',
+    'https://blog.gitscrum.com/feed/',
+    'https://www.agil8.com/feed/',
+    'https://www.scrumexpert.com/feed/'
+    ]
 
 def save_new_episodes(feed):
     """Saves new episodes to the database.
@@ -41,7 +52,8 @@ def save_new_episodes(feed):
             episode = Episode(
                 title=item.title,
                 description=item.description,
-                pub_date=parser.parse(item.published),
+                #pub_date=parser.parse(item.published),
+                pub_date=item.published_parsed,
                 link=item.link,
                 image=podcast_image,
                 podcast_name=podcast_title,
@@ -68,6 +80,7 @@ def save_new_news_items(feed):
                 description=item.description,
                 pub_date=parser.parse(item.published),
                 link=item.link,
+                image = reverse
                 guid=item.guid,
             )
             newsitem.save()
@@ -78,6 +91,7 @@ def fetch_realpython_episodes():
     _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
     save_new_episodes(_feed)
 
+
 def fetch_talkpython_episodes():
     """Fetches new episodes from RSS for the Talk Python to Me Podcast."""
     _feed = feedparser.parse(requests.get("https://talkpython.fm/episodes/rss", headers={'User-Agent': 'Mozilla/5.0'}).content)
@@ -85,13 +99,24 @@ def fetch_talkpython_episodes():
 
 def fetch_scaledagilefrmework_news_items():
     """Fetches new episodes from RSS for the Scale Agile Framework RSS feed"""
-    _feed = feedparser.parse(requests.get("http://www.scaledagileframework.com/feed/", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed = feedparser.parse(requests.get(url_scaled_agile, headers={'User-Agent': 'Mozilla/5.0'}).content)
     save_new_news_items(_feed)
 
 def fetch_101ways_news_items():
     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
-    _feed = feedparser.parse(requests.get("https://www.101ways.com/feed/", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed = feedparser.parse(requests.get(url_101ways, headers={'User-Agent': 'Mozilla/5.0'}).content)
     save_new_news_items(_feed)
+
+def fetch_agile_alliance_news_items():
+    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+    _feed = feedparser.parse(requests.get(url_agile_alliance, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    save_new_news_items(_feed)
+
+def fetch_leadinagile_news_items():
+    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+    _feed = feedparser.parse(requests.get(url_leadinagile , headers={'User-Agent': 'Mozilla/5.0'}).content)
+    save_new_news_items(_feed)
+    return True
 
 def delete_old_job_executions(max_age=604_800):
     """Deletes all apscheduler job execution logs older than `max_age`."""
@@ -159,7 +184,27 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        logger.info("Added job: 101 Waya Feed.")
+        logger.info("Added job: 101 Ways Feed.")
+
+        scheduler.add_job(
+            fetch_agile_alliance_news_items,
+            trigger="interval",
+            minutes=60,
+            id="Agile Alliance Feed",
+            max_instances=1,
+            replace_existing=True,
+        )
+        logger.info("Added job: Agile Alliance Feed.")
+
+        scheduler.add_job(
+            fetch_leadinagile_news_items,
+            trigger="interval",
+            minutes=4,
+            id="Lead In Agile feed",
+            max_instances=1,
+            replace_existing=True,
+        )
+        logger.info("Added job: Lead In Agile Feed.")
 
         scheduler.add_job(
             delete_old_job_executions,

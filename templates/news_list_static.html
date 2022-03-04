@@ -13,29 +13,34 @@
             <div class="row no-gutters">
               <div class="col-md-2 my-auto">
                 <img
-                  src="{{ newsitem.image }}"
+                  src="https://mister-data-aggregator.000webhostapp.com//static/imgs/agile_pm.png"
                   class="img-fluid ml-3 my-3"
                   alt="{{ image.source_name }}"
+                  width="100"
+                  height="100"
                 />
               </div>
               <div class="col-md-10">
                 <div class="card-body ml-3">
-                 <h3 class="card--link" ><a href="{% url 'podcasts:news_item' news_item.id %}">{{ news_item.title }}</a></h3>
-                  <h4> Comment</h4>
+                    <h3 class="card-title" >{{ news_item.title }}</h3>
+                    <h5 class="card-item-source">Source: {{ news_item.source_name }} :  Pub Date: {{ news_item.pub_date }}</h5>
+                    <h4> Comment</h4>
                     {% autoescape off %}
-                  <p>{{news_item.comment}}</p>
+                        <p>{{news_item.comment}}</p>
                     {% endautoescape %}
-                  <h5 class="card-item-source">Source: {{ news_item.source_name }} :  Pub Date: {{ news_item.pub_date }}</h5>
-                  <h5 class="card-item-status">Status: {{ news_item.status }}</h5>
 
+                    <h4>Synopsis</h4>
                   <p class="card-text">
                     {% autoescape off %}
-                    {{ news_item.description }}
+                        {{ news_item.description }}
                     {% endautoescape %}
                   </p>
-
-                  <a href="{{ news_item.link }}">
-                    <p class="card-text">🎧 Read this item</p>
+                    <a href="{{ news_item.link }}" class="btn btn-primary"  data-toggle="tooltip" data-placement="top"
+                            title="Press CNTRL and click">
+                        Read this item (CNTRL + Click)
+                        </a>
+                  <!-- <a href="{{ news_item.link }}">
+                    <p class="card-text">Read this item</p> -->
                   </a>
                 </div>
               </div>

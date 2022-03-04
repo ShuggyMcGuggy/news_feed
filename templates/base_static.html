@@ -21,36 +21,38 @@
 <body>
     <!-- Static navbar -->
 
-    <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-              aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'podcasts:homepage' %}">News Tracker Home</a>
-    </div>
+<nav class="navbar navbar-default">
+      <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                      aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'podcasts:homepage' %}">News Tracker Home</a>
+            </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-          <li>
-              <a href="{% url 'podcasts:news' %}">News</a>
-          </li>
-      </ul>
-
-
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  <li>
+                      <a href="{% url 'podcasts:news' %}">News</a>
+                  </li>
+                  <li>
+                      <a href="{% url 'podcasts:news_list_static' %}">News Static</a>
+                  </li>
+                  <li><a href="https://www.000webhost.com/cpanel-login">Web Host Login</a></li>
+              </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
     <div class="page-header">
-        <div class="col text-center">
-            <img src="https://bjss.sharepoint.com/:i:/r/sites/AgileCapability/Shared%20Documents/Projects/BJSS-AC005%20News%20Feed/agile_news.png?csf=1&web=1&e=gkbJG4" alt="pyCasts! Logo" id="site-logo" />
+        <div class="col">
+            <img src="https://mister-data-aggregator.000webhostapp.com//static/imgs/agile_news.png" alt="pyCasts! Logo" id="site-logo" />
         </div>
         {% block header%}{% endblock header %}
     </div>

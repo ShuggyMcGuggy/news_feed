@@ -5,6 +5,7 @@ investigate why the rel pth"""
 import requests
 from bs4 import BeautifulSoup
 from bs4 import SoupStrainer
+from dateutil import parser
 
 import feedparser
 #from podcasts.models import NewsItem
@@ -33,17 +34,23 @@ def read_podcasts(url_link):
     #podcast_image = feed.channel.image["href"]
 
     for item in feed.entries[:1]:
+        print(item.keys())
         print("Title : " + item.title)
         print("GUID: " + item.guid)
+        print('Pub Date: ' + item.published)
+        print('Parsed Pub Date: ' + str(item.published_parsed))
 
 def explore_feed(url_link):
     feed = feedparser.parse(requests.get(url_link, headers={'User-Agent': 'Mozilla/5.0'}).content)
     if feed:
         for item in feed.entries[:1]:
+            print(item.keys())
             print('Title: ' + item.title)
             print('Link: ' + item.link)
             print('Comments: ' + item.comments)
+            pub_date = parser.parse(item.published)
             print('Pub Date: ' + item.published)
+            print('Parsed Pub Date: ' + str(pub_date))
 
     else:
         print("Nothing found in feed", url)
