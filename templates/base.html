@@ -64,6 +64,15 @@
         </div>
         {% block header%}{% endblock header %}
     </div>
+
+    <!-- Login Verification -->
+    {% if user.is_authenticated %}
+    Hello, {{ user.username }}
+    <a href="{% url 'users:logout' %}">log out</a>
+    {% else %}
+    <a href="{% url 'users:login' %}">log in</a>
+    {% endif %}
+
     <div>
         {% block content %}{% endblock content %}
     </div>

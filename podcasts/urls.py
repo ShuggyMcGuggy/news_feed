@@ -22,6 +22,9 @@ urlpatterns = [
     # Edit page for the News Item
     url(r'^edit_news_item/(?P<news_item_id>\d+)/$', views.edit_news_item, name='edit_news_item'),
 
+    # Index page for Real home page
+    url(r'^home/$', views.home, name='home'),
+
 
 
 ]
