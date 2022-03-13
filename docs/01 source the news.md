@@ -5,6 +5,10 @@ markshury-smith
 Sack((345Boot))
 Sack((345Boot))
 
+Test User Accounts
+test_user01
+password: Stin567Fart
+
 ## What is news aggregator ?
 A news aggregator is a system that takes news from several resources and puts them all together. A good example of news aggregator are JioNews and Google News.
 ## Why build a news aggregator ?

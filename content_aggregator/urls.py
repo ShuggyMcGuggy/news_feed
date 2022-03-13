@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# The order here is important: it will go with first match so keep the home page at end
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include(("podcasts.urls", 'podcasts.apps.PodcastsConfig'), namespace='podcasts')),
-    path("", include(("users.urls", 'users.apps.UsersConfig'), namespace='users')),
+    path(r'users/', include('users.urls', namespace='users')),
+    path(r'', include(("podcasts.urls", 'podcasts.apps.PodcastsConfig'), namespace='podcasts')),
+
+
 ]

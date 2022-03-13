@@ -5,17 +5,21 @@ from django.contrib.auth.views import auth_login
 # from django.contrib.auth import authenticate, login, urls
 from django.contrib.auth import views as auth_views
 
-from . import views
+from users import views
 app_name = 'users'
 
 urlpatterns = [
     # Login Page
-    url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
+    # url(r'^login/$', auth_views.LoginView.as_view(), {'template_name': 'users/login.html'}, name='login'),
+    url("^login/$", auth_views.LoginView.as_view(),  name='login'),
+
     # url(r'^login/$', auth_login(),  name='login'),
 
     # Logout Page
-    url(r'^logout/$', views.logout_view, name='logout'),
+     url(r'logout/$', views.logout_view, name='logout'),
+    # url("logout/", auth_views.LogoutView.as_view(), name='logout'),
 
-    # # Registration page
-    # url(r'^register/$', views.register, name='register'),
+    #
+    # # # Registration page
+    url(r'^register/$', views.register, name='register'),
     ]

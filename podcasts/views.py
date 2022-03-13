@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
+
 
 from .models import Episode, NewsItem
 from .forms import NewsItemForm
@@ -14,14 +16,6 @@ def home(request):
     """ Landing page for the published site"""
     return render(request, 'index.html')
 
-class HomePageView(ListView):
-    template_name = "homepage.html"
-    model = Episode
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["episodes"] = Episode.objects.filter().order_by("-pub_date")[:10]
-        return context
 
 class HomePageView(ListView):
     template_name = "homepage.html"
@@ -87,6 +81,7 @@ def news_list_star_rating(request):
 
 
 # **************************
+@login_required
 def news_item(request, news_item_id='1'):
     """ Show a single news item"""
     b_is_saved_as_static = True
@@ -109,7 +104,7 @@ def news_item(request, news_item_id='1'):
 
 
     return render(request, 'news_item.html', context)
-
+@login_required
 def edit_news_item(request, news_item_id='1'):
     """ Edit an existing news item"""
     news_item = NewsItem.objects.get(id=news_item_id)
@@ -128,3 +123,5 @@ def edit_news_item(request, news_item_id='1'):
     context = {'news_item': news_item,
                'form': form}
     return render(request, 'edit_news_item.html', context)
+
+

@@ -6,3 +6,9 @@
 - Import the django login model and define the login page url patterns
 - Create a users/template/ users directory and create the login page
 
+The login function has changed: Need to use the Auth modeul in ython and the login.html now has to be
+in the directory registry.
+
+Need to chanegt the url patternt to pick up the inxex pahe as home and 
+Hopage as alternate
+

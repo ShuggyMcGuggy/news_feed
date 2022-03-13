@@ -149,3 +149,6 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+# My Settings
+LOGIN_URL = '/users/login'

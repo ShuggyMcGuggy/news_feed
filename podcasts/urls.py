@@ -7,7 +7,10 @@ from . import views
 urlpatterns = [
 
     # Home Page
-    path("", HomePageView.as_view(), name="homepage"),
+    # path("", HomePageView.as_view(), name="homepage"),
+    path("List/", HomePageView.as_view(), name="homepage"),
+
+    # url('', views.home, name='home'),
 
     # Show all news items
     path('news/', NewsView.as_view(), name='news'),
@@ -23,7 +26,9 @@ urlpatterns = [
     url(r'^edit_news_item/(?P<news_item_id>\d+)/$', views.edit_news_item, name='edit_news_item'),
 
     # Index page for Real home page
-    url(r'^home/$', views.home, name='home'),
+    url(r'', views.home, name='home'),
+    # path('home/', HomePageView.as_view(), name="homepage"),
+
 
 
 
