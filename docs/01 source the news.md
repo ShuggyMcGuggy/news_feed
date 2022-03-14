@@ -9,6 +9,11 @@ Test User Accounts
 test_user01
 password: Stin567Fart
 
+## Heroku Admin Accoun
+Account: pc_admin 
+Password: Sack((345Boot))
+
+
 ## What is news aggregator ?
 A news aggregator is a system that takes news from several resources and puts them all together. A good example of news aggregator are JioNews and Google News.
 ## Why build a news aggregator ?

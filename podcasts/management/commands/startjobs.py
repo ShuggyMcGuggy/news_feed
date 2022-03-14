@@ -80,8 +80,8 @@ def save_new_news_items(feed):
                 description=item.description,
                 pub_date=parser.parse(item.published),
                 link=item.link,
-                image = reverse
-                guid=item.guid,
+                image= reverse,
+                guid=item.guid
             )
             newsitem.save()
 
