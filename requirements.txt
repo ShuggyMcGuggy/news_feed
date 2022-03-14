@@ -31,4 +31,4 @@ static3==0.7.0
 tzdata==2021.5
 tzlocal==4.1
 urllib3==1.26.8
-psycopg>=2.6.1
+psycopg2>=2.9.2
