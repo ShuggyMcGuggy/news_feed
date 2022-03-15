@@ -25,9 +25,13 @@ urlpatterns = [
     # Edit page for the News Item
     url(r'^edit_news_item/(?P<news_item_id>\d+)/$', views.edit_news_item, name='edit_news_item'),
 
-    # Index page for Real home page
+    # Dummy page to load test story
+    url(r'test_story/', views.load_test_story, name='load_test_story'),
+
+    # Index page for Real home page (OTHER URLS NEED TO be above this)
     url(r'', views.home, name='home'),
     # path('home/', HomePageView.as_view(), name="homepage"),
+
 
 
 

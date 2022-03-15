@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
 
+from dateutil import parser
+
 
 from .models import Episode, NewsItem
 from .forms import NewsItemForm
@@ -124,4 +126,19 @@ def edit_news_item(request, news_item_id='1'):
                'form': form}
     return render(request, 'edit_news_item.html', context)
 
+# ***** Create a view to load a new story and test it works
+def load_test_story(request):
+
+    newsitem = NewsItem(
+        source_name="My Source",
+        title="My Title",
+        description="Fabulous",
+        pub_date=parser.parse("15/03/2022"),
+        link="https://www.adoclib.com/blog/django-psycopg2-errors-stringdatarighttruncation-value-too-long-for-type-character-varying-200.html",
+        image="https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png" ,
+        guid="0001",
+    )
+    if not NewsItem.objects.filter(guid=item.guid).exists():
+        newsitem.save()
+    return render(request, 'load_test_story.html')
 
