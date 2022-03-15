@@ -42,7 +42,7 @@ class NewsItem(models.Model):
     link = models.URLField(max_length = 300)
     image = models.URLField()
     podcast_name = models.CharField(max_length=100)
-    guid = models.CharField(max_length=50)
+    guid = models.CharField(max_length=200)
     comment = models.TextField()
     status = models.ForeignKey(Status,
     models.SET_NULL,
