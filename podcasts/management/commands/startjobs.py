@@ -71,6 +71,7 @@ def save_new_news_items(feed):
         feed: requires a feedparser object
     """
     source_title = feed.channel.title
+    podcast_image = feed.channel.image["href"]
 
     for item in feed.entries:
         if not NewsItem.objects.filter(guid=item.guid).exists():
@@ -80,7 +81,7 @@ def save_new_news_items(feed):
                 description=item.description,
                 pub_date=parser.parse(item.published),
                 link=item.link,
-                image="https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2Ficons%2Ffoody-icons%2F32%2FFoodyIcons_color-04-512.png&imgrefurl=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F701178%2Fcheddar_cheese_icon&tbnid=wVyisjw9TjwQ7M&vet=12ahUKEwjPmsuM18b2AhURXcAKHelXArQQMygZegUIARCYAg..i&docid=QTGOV1F44yN8PM&w=512&h=512&q=image%20icon%20cheese&ved=2ahUKEwjPmsuM18b2AhURXcAKHelXArQQMygZegUIARCYAg",
+                image=podcast_image,
                 guid=item.guid,
             )
             newsitem.save()
