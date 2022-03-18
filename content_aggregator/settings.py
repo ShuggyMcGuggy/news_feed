@@ -44,7 +44,9 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     "django_apscheduler",
-    'bootstrap3'
+    # 'bootstrap3'
+    'bootstrap5'
+
 ]
 
 MIDDLEWARE = [
@@ -155,9 +157,10 @@ LOGGING = {
 LOGIN_URL = '/users/login'
 
 # Settings for django-bootstrap3
-BOOTSTRAP3 = {
-    'include_jquery': True,
-}
+# BOOTSTRAP3 = {
+#     'include_jquery': True,
+# }
+
 
 # Heroku Settings
 if os.getcwd() == '/app':

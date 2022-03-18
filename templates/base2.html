@@ -1,0 +1,98 @@
+{% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+          color: orange;
+        }
+    </style>
+    <title>
+        News Aggregator
+    </title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+
+
+</head>
+
+<body>
+    <!-- Static navbar -->
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+          <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <ul class="navbar-nav">
+                                  <li><
+                                    <a class="navbar-brand" href="#">
+                                    <img src="{% static 'imgs/agile_pm.png' %}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Be My SME</a>
+                                  </li>
+                                  <li>
+                                    <a class="nav-link active" href="{% url 'podcasts:news' %}">News</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'podcasts:news_list_static' %}">News: Static Publish</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="https://www.000webhost.com/cpanel-login">Web Host Login</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link disabled" href="{% url 'podcasts:homepage' %}">Disabled</a>
+                                  </li>
+                            </ul>
+                         </div>
+                        <div class="col-md-1"></div>
+                       <div class="col-md-3">
+                                <!-- Login Verification -->
+                                {% if user.is_authenticated %}
+                                       <p style="color:white;"> Hello, {{ user.username }} &nbsp&nbsp&nbsp
+                                <a href="{% url 'users:logout' %}">log out</a>
+                                       </p>
+                                {% else %}
+                           <p>
+                                <a href="{% url 'users:register' %}">register</a>
+                                &nbsp&nbsp
+                                <a href="{% url 'users:login' %}">log in</a>
+                                {% endif %}
+                           </p>
+                       </div>
+                    </div>
+                    </div>
+
+                </div>
+          </div>
+
+    </nav> <!-- End of Nav Bar -->
+
+<div class="container-fluid p-3">
+    <div class="page-header">
+        <div class="col text-center">
+            <img src="{% static 'imgs/agile_news.png' %}" alt="Agile News Logo" id="site-logo" />
+        </div>
+        {% block header%}{% endblock header %}
+    </div>
+
+
+
+
+    <div>
+        {% block content %}{% endblock content %}
+    </div>
+
+</div><!-- /container -->
+
+</body>
+</html>
