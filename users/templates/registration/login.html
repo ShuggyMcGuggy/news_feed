@@ -2,11 +2,13 @@
 {% load bootstrap5 %}
 
 {% block header %}
-    <h2>Log into your account</h2>
+<div class="container-fluid p-3 bg-dark text-white">
+    <h3>Log into your account</h3>
+</div>
 {% endblock header %}
 
 {% block content %}
-
+<div class="container-fluid p-3">
     <form method="post" action="{% url 'users:login' %}" class="form">
       {% csrf_token %}
         {% bootstrap_form form %}
@@ -16,9 +18,10 @@
         {% endbuttons %}
 
 
-    <input type="hidden" name="next" value="{% url 'podcasts:homepage' %}" />
+    <input type="hidden" name="next" value="{% url 'podcasts:home' %}" />
 
 
     </form>
+</div>
 
 {% endblock content %}
