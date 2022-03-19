@@ -1,23 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 
 {% block content %}
+<div class="container-fluid p-2 ps-4 bg-dark text-white"
+    <h2> News Item: {{ news_item.title }}</h2>
+</div>
 
-<h3> News Item: {{ news_item.title }}</h3>
-<p> <h3> Status: {{ news_item.status }} </h3></p>
-<p>
-    {% autoescape off %}
-    {{ news_item.description }}
-    {% endautoescape %}
-</p>
-<h3>  Comment </h3>
-<p> {% autoescape off %}
-    {{ news_item.comment }}
-    {% endautoescape %}
-</p>
-<a href="{{ news_item.link}}">Link to News Item</a>
-<p>
-    <a href="{% url 'podcasts:edit_news_item' news_item.id %}">edit entry</a>
-</p>
+<div class="container-fluid p-2 ps-4 "
+     <div class="row">
+        <p> <h4> Status: {{ news_item.status }} </h4></p>
+        <p>
+            {% autoescape off %}
+            {{ news_item.description }}
+            {% endautoescape %}
+        </p>
+        <h4>  Comment </h4>
+        <p> {% autoescape off %}
+            {{ news_item.comment }}
+            {% endautoescape %}
+        </p>
+            <a href="{{ news_item.link}}">Link to News Item</a>
+            <p>
+                <a href="{% url 'podcasts:edit_news_item' news_item.id %}">edit entry</a>
+            </p>
+    </div>
+</div>
 
 
 {% endblock content %}

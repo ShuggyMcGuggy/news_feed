@@ -1,0 +1,45 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<div class="container-fluid p-2 ps-4 bg-dark text-white"
+    <h1> {{ pub_item.title }}</h1>
+</div>
+
+<div class="container-fluid p-2 ps-4 "
+     <div class="row">
+        <p>
+            {% autoescape off %}
+            {{ pub_item.description }}
+            {% endautoescape %}
+        </p>
+
+    </div>
+</div>
+
+<div class="container-fluid p-2 ps-4 bg-dark text-white"
+    <h2> Linked News Stories</h2>
+</div>
+
+<!--            <p> Stories {{ l_stories }}</p>-->
+
+<div class="container-fluid p-2 ps-4 ">
+<!--    {% for news_item in news_items %}-->
+<!--        <p>{{ news_item.news_item_id }}</p>-->
+<!--    {% endfor %}-->
+
+        {% for news_item in l_stories %}
+            <h3>{{news_item.title}}</h3>
+                {% autoescape off %}
+            <p>{{ news_item.description }}</p>
+                {% endautoescape %}
+            </p>
+            <a href="{{ news_item.link}}">Link to News Item</a>
+            <p>
+                <a href="{% url 'podcasts:edit_news_item' news_item.id %}">edit entry</a>
+            </p>
+        {% endfor %}
+
+</div>
+
+
+{% endblock content %}

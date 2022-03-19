@@ -40,7 +40,7 @@ class NewsView(ListView):
         return context
 
 class PubsView(ListView):
-    """ Show a full list of all news items"""
+    """ Show a full list of all publication items"""
     template_name = "pubs_home.html"
     model = Publication
 
@@ -49,15 +49,30 @@ class PubsView(ListView):
         context["pubitems"] = Publication.objects.all()
         return context
 
-# class NewsItemView(ListView):
-#     """ Show a full list of all news items"""
-#     template_name = "news_home.html"
-#     model = NewsItem
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["newsitem"] = NewsItem.objects.filter().order_by("-pub_date")[:10]
-#         return context
+def pub_item(request, pub_item_id='1'):
+    """ Show a single publication"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+
+    l_stories = []
+    for linked_news_item in l_linked_news:
+        news_story = linked_news_item.news_item_id
+        l_stories = l_stories + [news_story]
+
+
+
+
+
+
+
+
+
+    context = {'pub_item': pub_item,
+               'news_items': l_linked_news,
+               'l_stories': l_stories}
+    return render(request, 'pub_item.html', context)
+
+
 
 def news_list_static(request):
     """ Show all the news items tagged to publish"""

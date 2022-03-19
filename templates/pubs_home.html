@@ -16,7 +16,8 @@
           {% for pubitem in pubitems %}
               <section class="card mb-3 p-1">
                 <div class="row no-gutters p-1 ps-3">
-                    <h3>{{ pubitem.title }}</h3>
+                    <h3 class="card-item-link" ><a href="{% url 'podcasts:pub_item' pubitem.id %}">{{ pubitem.title }}</a></h3>
+                    <p> Pubitem link: {% url 'podcasts:pub_item' pubitem.id %}</p>
                     <p>{{ pubitem.description }}</p>
                 </div>
               </section>

@@ -52,7 +52,7 @@ class NewsItem(models.Model):
     star_rating = models.IntegerField(default=5)
 
     def __str__(self) -> str:
-        return f"{self.source_name}: {self.title}"
+        return f"{self.id}"
 
 # Define model for publications
 class Publication(models.Model):
@@ -61,7 +61,7 @@ class Publication(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f" Title: {self.title}"
+        return f"{self.id}"
 
 # Lookup table to identify the stories to include in a publication
 class Publication_Stories(models.Model):
