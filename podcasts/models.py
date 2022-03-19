@@ -54,3 +54,32 @@ class NewsItem(models.Model):
     def __str__(self) -> str:
         return f"{self.source_name}: {self.title}"
 
+# Define model for publications
+class Publication(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f" Title: {self.title}"
+
+# Lookup table to identify the stories to include in a publication
+class Publication_Stories(models.Model):
+    readonly_fields = ('id',)
+    publication_id = models.ForeignKey(Publication,
+    models.SET_NULL,
+        blank=True,
+        null=True,
+        )
+    news_item_id = models.ForeignKey(NewsItem,
+    models.SET_NULL,
+        blank=True,
+        null=True,
+        )
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Publication_Stories'
+
+    def __str__(self) -> str:
+        return f" Pub ID: {self.publication_id} News ID: {self.news_item_id}"

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Episode, NewsItem, Status
+from .models import Episode, NewsItem, Status, Publication, Publication_Stories
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
@@ -9,8 +9,16 @@ class EpisodeAdmin(admin.ModelAdmin):
 
 @admin.register(NewsItem)
 class NewsItemAdmin(admin.ModelAdmin):
-    list_display = ("source_name", "title", "pub_date")
+    list_display = ("id", "source_name", "title", "pub_date")
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
     list_display = ("state", "description", "date_added")
+
+@admin.register(Publication)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ("id","title", "description", "date_added")
+
+@admin.register(Publication_Stories)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ("publication_id", "news_item_id", "date_added")
