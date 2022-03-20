@@ -24,6 +24,7 @@ class Status(models.Model):
      - Republished
      - Done
      """
+    readonly_fields = ('id',)
     state = models.CharField(max_length=20)
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

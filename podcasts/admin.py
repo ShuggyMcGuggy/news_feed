@@ -13,7 +13,7 @@ class NewsItemAdmin(admin.ModelAdmin):
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ("state", "description", "date_added")
+    list_display = ("id","state", "description", "date_added")
 
 @admin.register(Publication)
 class StatusAdmin(admin.ModelAdmin):

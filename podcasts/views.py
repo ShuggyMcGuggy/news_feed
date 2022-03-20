@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from dateutil import parser
 
 
-from .models import Episode, NewsItem, Publication_Stories, Publication
+from .models import Episode, NewsItem, Publication_Stories, Publication, Status
 from .forms import NewsItemForm
 
 # Create your views here.
@@ -46,7 +46,8 @@ class NewsNewView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["newsitems"] = NewsItem.objects.filter(status=1).order_by("-pub_date")[:10]
+        status_new = Status.objects.filter(state='New')
+        context["newsitems"] = NewsItem.objects.filter(status=status_new[0].id).order_by("-pub_date")[:10]
         return context
 
 class PubsView(ListView):
