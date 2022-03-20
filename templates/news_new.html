@@ -1,6 +1,9 @@
 {% extends "base2.html" %}
 
 {% block header %}
+<div class="container-fluid p-3  bg-dark text-white">
+  <h2> Breaking News</h2>
+</div>
 {% endblock header %}
 
 {% block content %}
@@ -11,7 +14,7 @@
           {% for newsitem in newsitems %}
           <section class="card mb-3">
             <div class="row ps-2 no-gutters">
-              <div class="col-md-2  my-auto">
+              <div class="col-md-2 my-auto">
                 <img
                   src="{{ newsitem.image }} "
                   class="img-fluid ml-3 my-3"
@@ -53,7 +56,6 @@
         </div>
       </div>
 </div>
-
 {% endblock content %}
 
 

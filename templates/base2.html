@@ -40,13 +40,19 @@
                                   <li class="nav-item">
                                     <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Be My SME</a>
                                   </li>
-                                  <li>
-                                    <a class="nav-link " href="{% url 'podcasts:news' %}">News</a>
+                                  <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">News</a>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:news_new' %}">New News</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:news' %}">All News</a></li>
+                                      </ul>
                                   </li>
                                   <li>
                                     <a class="nav-link" href="{% url 'podcasts:publications' %}">Publications</a>
                                   </li>
+
                             </ul>
+
                          </div>
                         <div class="col-md-1"></div>
                        <div class="col-md-3">

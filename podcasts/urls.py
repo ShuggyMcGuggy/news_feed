@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import HomePageView, NewsView, PubsView, pub_item
+from .views import HomePageView, NewsView, PubsView, pub_item, NewsNewView
 from . import views
 
 urlpatterns = [
@@ -14,6 +14,9 @@ urlpatterns = [
 
     # Show all news items
     path('news/', NewsView.as_view(), name='news'),
+
+    # Show list of just new items
+    path('news_new/', NewsNewView.as_view(), name='news_new'),
 
     # Show all news items and enable page to to saved to static HTML page
     url(r'^news_list_static/$', views.news_list_static, name='news_list_static'),

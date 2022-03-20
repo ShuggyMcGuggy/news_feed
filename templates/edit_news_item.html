@@ -4,14 +4,19 @@
 {% endblock header %}
 
 {% block content %}
-<p><a href="{% url 'podcasts:news_item' news_item.id %}">{{ news_item.title }}</a></p>
-<p> Edit News Item</p>
+<div class="container-fluid p-3 bg-dark text-white"
+<h1> Edit News Item</h1>
+</div>
+<div class="container-fluid p-3"
+<h3><a href="{{news_item.link}}" target="_blank" rel="noopener noreferrer">Link: {{ news_item.title }}</a></h3>
 
+<h3>Synposis of the News item</h3>
 <form action="{% url 'podcasts:edit_news_item' news_item.id %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">save changes</button>
 
 </form>
+</div>
 
 {% endblock content %}

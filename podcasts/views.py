@@ -39,6 +39,16 @@ class NewsView(ListView):
         context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:20]
         return context
 
+class NewsNewView(ListView):
+    """ Show a full list of all news items"""
+    template_name = "news_new.html"
+    model = NewsItem
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["newsitems"] = NewsItem.objects.filter(status=1).order_by("-pub_date")[:10]
+        return context
+
 class PubsView(ListView):
     """ Show a full list of all publication items"""
     template_name = "pubs_home.html"

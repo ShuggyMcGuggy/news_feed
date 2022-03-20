@@ -17,7 +17,7 @@ from django_apscheduler.models import DjangoJobExecution
 # import datetime
 
 # ******* Models **********
-from podcasts.models import Episode, NewsItem
+from podcasts.models import Episode, NewsItem, Status
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +73,8 @@ def save_new_news_items(feed):
     source_title = feed.channel.title
     # podcast_image = feed.channel.image["https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"]
     podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
+    status_new = Status.objects.get(id=1)
+
 
     for item in feed.entries:
         if not NewsItem.objects.filter(guid=item.guid).exists():
@@ -84,6 +86,7 @@ def save_new_news_items(feed):
                 link=item.link,
                 image=podcast_image,
                 guid=item.guid,
+                status=status_new
             )
             newsitem.save()
 
