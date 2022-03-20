@@ -73,7 +73,7 @@ def save_new_news_items(feed):
     source_title = feed.channel.title
     # podcast_image = feed.channel.image["https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"]
     podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
-    status_new = Status.objects.get(id=1)
+    status_new = Status.objects.get(state='New')
 
 
     for item in feed.entries:
