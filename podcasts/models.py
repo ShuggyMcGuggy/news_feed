@@ -58,6 +58,8 @@ class NewsItem(models.Model):
 class Publication(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    image = models.URLField(default="https://www.clipartmax.com/png/middle/265-2655834_work-in-progress-icon.png")
+    image_file = models.CharField(max_length=20, default="wip.jpg") # file name of the image file held in staticfiles/img
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
