@@ -2,45 +2,36 @@
 
 {% block content %}
 
-    {% load static %}
+{% load static %}
+
 <div class="container-fluid p-2 ps-4 bg-dark text-white">
-    <h3> Publication: {{ pub_item.title }}</h3>
+    <h2> Edit Publication</h2>
 </div>
 
-<div class="container-fluid p-2 ps-4 ">
-     <div class="row">
-          <section class="card mb-4">
-            <div class="row ps-2 no-gutters">
-              <div class="col-md-4  my-auto">
-                <img
-                  src="{%static 'imgs/' %}{{ pub_item.image_file}}"
-                  class="img-fluid ml-3 my-3"
-                  alt="{{ image.source_name }}"
-                  width="600"
-                  height="600"
-                />
-              </div>
-            <div class="col-md-8">
-                <div class="card-body ml-3">
-                    <p>
-                        {% autoescape off %}
-                        {{ pub_item.description }}
-                        {% endautoescape %}
-                    </p>
-                </div>
-            </div>
-                <!-- link to edit the entry -->
-                <p>
-<!--                    Entry ID: {{ pub_item.id }}-->
-                    <a href="{% url 'podcasts:article_edit' pub_item.id %}"> Edit entry</a>
-                </p>
-          </section>
+<div class="container-fluid p-3 ">
+    <div class="row">
+        <div class=" col-md-3">
+            <img
+              src="{%static 'imgs/' %}{{ pub_item.image_file}}"
+              class="img-fluid ml-3 my-3"
+              alt="{{ image.source_name }}"
+              width="400"
+              height="400"
+            />
+        </div>
+        <div class=" col-md-8">
+            <h2>Headline</h2>
+            <form action="{% url 'podcasts:article_edit' pub_item.id %}"
+                  method='post'>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button Name='submit'>Save Changes</button
+
+            </form>
+        </div>
     </div>
 </div>
-
-
-
-
+</div>
 
 <div class="container-fluid p-2 ps-4 bg-dark text-white">
     <h3> Linked News Stories</h3>
@@ -90,6 +81,5 @@
         {% endfor %}
 
 </div>
-
 
 {% endblock content %}

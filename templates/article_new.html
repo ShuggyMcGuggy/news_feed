@@ -1,0 +1,21 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<div class="container-fluid p-2 ps-4 bg-dark text-white">
+    <h2> Create New Publication</h2>
+</div>
+
+<div class="container-fluid p-3 ">
+    <h2>Headline</h2>
+    <form action="{% url 'podcasts:article_new'  %}"
+          method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button Name='submit'>Add Entry</button
+
+    </form>
+
+</div>
+
+
+{% endblock content %}

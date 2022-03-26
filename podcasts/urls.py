@@ -1,7 +1,8 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import HomePageView, NewsView, PubsView, pub_item, NewsNewView
+from .views import HomePageView, NewsView, PubsView,\
+    pub_item, NewsNewView, ArticleNewView, ArticleEditView
 from . import views
 
 urlpatterns = [
@@ -33,7 +34,13 @@ urlpatterns = [
 
     # Detail page for a single publication
     # url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item.as_view(), name='pub_item'),
-    url(r'^pub_item/(?P<pub_item_id>\d+)/$', views.pub_item, name='pub_item'),
+    url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item, name='pub_item'),
+
+    # Page to create a new Article
+    url(r'^article_new/$', ArticleNewView, name='article_new'),
+
+    # Page to Edit an Article
+    url(r'^article_edit/(?P<pub_item_id>\d+)/$', ArticleEditView, name='article_edit'),
 
     # Dummy page to load test story
     url(r'test_story/', views.load_test_story, name='load_test_story'),

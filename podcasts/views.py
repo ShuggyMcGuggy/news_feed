@@ -10,7 +10,7 @@ from dateutil import parser
 
 
 from .models import Episode, NewsItem, Publication_Stories, Publication, Status
-from .forms import NewsItemForm
+from .forms import NewsItemForm, ArticleForm
 
 # Create your views here.
 
@@ -70,20 +70,69 @@ def pub_item(request, pub_item_id='1'):
         news_story = linked_news_item.news_item_id
         l_stories = l_stories + [news_story]
 
-
-
-
-
-
-
-
-
     context = {'pub_item': pub_item,
                'news_items': l_linked_news,
                'l_stories': l_stories}
     return render(request, 'pub_item.html', context)
 
+def ArticleNewView(request):
+    """ Create a New Publication"""
 
+    if request.method != 'POST':
+        # No data submitted; create a blank form.
+        form = ArticleForm()
+    else:
+        # POST data submitted ; process data.
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            new_article = form.save(commit=False)
+            new_article.save()
+            return HttpResponseRedirect(reverse('podcasts:publications'))
+
+
+    context = {'form': form}
+    return render(request, 'article_new.html', context)
+
+    #
+    # l_stories = []
+    # for linked_news_item in l_linked_news:
+    #     news_story = linked_news_item.news_item_id
+    #     l_stories = l_stories + [news_story]
+    #
+    # context = {'pub_item': pub_item,
+    #            'news_items': l_linked_news,
+    #            'l_stories': l_stories}
+    # return render(request, 'pub_item.html', context)
+
+def ArticleEditView(request, pub_item_id='1'):
+    """ Edit an existing article"""
+    """ Show a single publication"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+
+    if request.method != 'POST':
+        form = ArticleForm(instance=pub_item )
+    else:
+        form = ArticleForm(instance=pub_item, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('podcasts:publications'))
+
+    # context = {'pub_item': pub_item, 'form': form}
+    # return render(request, 'article_edit.html', context)
+
+
+    l_stories = []
+    for linked_news_item in l_linked_news:
+        news_story = linked_news_item.news_item_id
+        l_stories = l_stories + [news_story]
+
+    context = {'pub_item': pub_item,
+               'news_items': l_linked_news,
+               'l_stories': l_stories,
+               'form': form
+               }
+    return render(request, 'article_edit.html', context)
 
 def news_list_static(request):
     """ Show all the news items tagged to publish"""

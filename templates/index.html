@@ -1,17 +1,31 @@
 {% extends "base2.html" %}
 
 {% block content %}
+{% load static %}
+
 <div class="container-fluid p-2 bg-dark text-white">
-    <h3>Let me be your SME: Sharing News and Insights</h3>
+    <h3>Commentator: Sharing the News that Drives how you work</h3>
 </div>
 <div class="container-fluid p-2">
-    <p> The <em>Be My SME</em> site provides multiple news sources for review and publication.</p>
-    <p> Your Brand: Re-publishing the news that you follow and your insights help connect with people who: </p>
-    <ol>
-        <li> Face the same problems</li>
-        <li> Share the same interests and insights </li>
-        <li> Find new insights through the information and analysis you share.</li>
-    </ol>
+    <div class="row">
+         <div class="col-md-2">
+            <img src="{% static 'imgs/commentator.png' %}"
+               class="img-fluid ml-3 my-3"
+              alt="Commentator"
+              width="200"
+              height="200">
+
+         </div>
+         <div class="col-md-9">
+            <p> The <em>Commentator</em> site provides multiple news sources for review and publication.</p>
+            <p>The easy way to establish a sustainable web presence and generating insightful content.</p>
+            <ol>
+                <li> Provide Insights backed by the news that interests you</li>
+                <li> Share resources with others that share your interests </li>
+                <li> Provide more insight into who you are and how you work</li>
+            </ol>
+        </div>
+    </div>
 </div>
 
 <div class="container-fluid p-2 bg-dark text-white">

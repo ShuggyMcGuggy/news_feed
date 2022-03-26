@@ -14,7 +14,7 @@
         }
     </style>
     <title>
-        News Aggregator
+        Commentator
     </title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -34,11 +34,11 @@
                             <ul class="navbar-nav">
                                   <li><
                                     <a class="navbar-brand" href="{% url 'podcasts:home">
-                                    <img src="{% static 'imgs/agile_pm.png' %}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+                                    <img src="{% static 'imgs/commentator.png' %}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
                                     </a>
                                   </li>
                                   <li class="nav-item">
-                                    <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Be My SME</a>
+                                    <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Commentator</a>
                                   </li>
                                   <li class="nav-item dropdown">
                                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">News</a>
@@ -47,9 +47,15 @@
                                         <li><a class="dropdown-item" href="{% url 'podcasts:news' %}">All News</a></li>
                                       </ul>
                                   </li>
-                                  <li>
-                                    <a class="nav-link" href="{% url 'podcasts:publications' %}">Publications</a>
+                                  <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="{% url 'podcasts:publications' %}" role="button" data-bs-toggle="dropdown">Publications</a>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:article_new' %}">New Article</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:publications' %}">All Publications</a></li>
+
+                                      </ul>
                                   </li>
+
 
                             </ul>
 

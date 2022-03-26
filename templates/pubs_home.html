@@ -6,23 +6,39 @@
 
 {% block content %}
 
+{% load static %}
+
   <div class="container-fluid p-2 bg-dark text-white">
     <h3> Publications</h3>
   </div>
 
-    <div class="container-fluid p3"
+    <div class="container-fluid p3">
       <div class="row">
         <div class="col">
-          {% for pubitem in pubitems %}
-              <section class="card mb-3 p-1">
-                <div class="row no-gutters p-1 ps-3">
-                    <h3 class="card-item-link" ><a href="{% url 'podcasts:pub_item' pubitem.id %}">{{ pubitem.title }}</a></h3>
-                    {% autoescape off %}
-                    <p>{{ pubitem.description }}</p>
-                    {% endautoescape %}
-                </div>
-              </section>
-          {% endfor %}
+              {% for pub_item in pubitems %}
+
+                  <section class="card mb-3 p-1">
+                        <div class="row ps-2 no-gutters">
+                          <div class="col-md-2  my-auto">
+                            <img
+                              src="{%static 'imgs/' %}{{ pub_item.image_file}}"
+                              class="img-fluid ml-3 my-3"
+                              alt="{{ image.source_name }}"
+                              width="200"
+                              height="200"
+                            />
+                          </div>
+                      <div class="col-md-10">
+                        <div class="card-body ml-3">
+                            <h3 class="card-item-link" ><a href="{% url 'podcasts:pub_item' pub_item.id %}">{{ pub_item.title }}</a></h3>
+                            {% autoescape off %}
+                            <p>{{ pub_item.description }}</p>
+                            {% endautoescape %}
+                        </div>
+                      </div>
+                  </section>
+              {% endfor %}
+
         </div>
       </div>
   </div>
