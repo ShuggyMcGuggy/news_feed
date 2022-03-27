@@ -1,0 +1,106 @@
+{% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+          color: orange;
+        }
+    </style>
+    <title>
+        Commentator
+    </title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+
+
+</head>
+
+<body>
+    <!-- Static navbar -->
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+          <div class="container-fluid">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <ul class="navbar-nav">
+                                  <li><
+                                    <a class="navbar-brand" href="{% url 'podcasts:home">
+                                    <img src="imgs\commentator.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+                                    </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Commentator</a>
+                                  </li>
+                                  <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">News</a>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:news_new' %}">New News</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:news' %}">All News</a></li>
+                                      </ul>
+                                  </li>
+                                  <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="{% url 'podcasts:publications' %}" role="button" data-bs-toggle="dropdown">Publications</a>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:article_new' %}">New Article</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'podcasts:publications' %}">All Publications</a></li>
+
+                                      </ul>
+                                  </li>
+
+
+                            </ul>
+
+                         </div>
+                        <div class="col-md-1"></div>
+                       <div class="col-md-3">
+                                <!-- Login Verification -->
+                                {% if user.is_authenticated %}
+                                       <p style="color:white;"> Hello, {{ user.username }} &nbsp&nbsp&nbsp
+                                <a href="{% url 'users:logout' %}">log out</a>
+                                       </p>
+                                {% else %}
+                           <p>
+                                <a href="{% url 'users:register' %}">register</a>
+                                &nbsp&nbsp
+                                <a href="{% url 'users:login' %}">log in</a>
+                                {% endif %}
+                           </p>
+                       </div>
+                    </div>
+                    </div>
+
+                </div>
+          </div>
+
+    </nav> <!-- End of Nav Bar -->
+
+<div class="container-fluid p-3 ">
+    <div class="page-header">
+        <div class="col text-center">
+            <img src="imgs\agile_news.png" alt="Agile News Logo" id="site-logo" />
+        </div>
+    </div>
+</div><!-- /container -->
+        {% block header%}{% endblock header %}
+
+
+
+
+
+
+        {% block content %}{% endblock content %}
+
+
+
+
+</body>
+</html>

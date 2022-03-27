@@ -1,4 +1,4 @@
-{% extends 'base2.html' %}
+{% extends 'base2_static.html' %}
 
 {% block content %}
 
@@ -13,7 +13,7 @@
             <div class="row ps-2 no-gutters">
               <div class="col-md-4  my-auto">
                 <img
-                  src="{%static 'imgs/' %}{{ pub_item.image_file}}"
+                  src="{{static_website_static}}\{{ pub_item.image_file}}"
                   class="img-fluid ml-3 my-3"
                   alt="{{ image.source_name }}"
                   width="600"
@@ -29,14 +29,10 @@
                     </p>
                 </div>
             </div>
-
+                <!-- link to edit the entry -->
                 <p>
-                    <!-- link to edit the entry -->
+<!--                    Entry ID: {{ pub_item.id }}-->
                     <a href="{% url 'podcasts:article_edit' pub_item.id %}"> Edit entry</a>
-                </p>
-                <p>
-                    <!-- Link to generate Static web page -->
-                    <a href="{% url 'podcasts:pub_item_static' pub_item.id %}"> Publish Static Page</a>
                 </p>
           </section>
     </div>

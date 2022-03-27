@@ -2,7 +2,8 @@ from django.urls import path
 from django.conf.urls import url
 
 from .views import HomePageView, NewsView, PubsView,\
-    pub_item, NewsNewView, ArticleNewView, ArticleEditView
+    pub_item, NewsNewView, ArticleNewView, ArticleEditView,\
+    pub_item_static
 from . import views
 
 urlpatterns = [
@@ -35,6 +36,9 @@ urlpatterns = [
     # Detail page for a single publication
     # url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item.as_view(), name='pub_item'),
     url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item, name='pub_item'),
+
+    # URL to generate a static YTML page for a single publication
+    url(r'^pub_item_static/(?P<pub_item_id>\d+)/$', pub_item_static, name='pub_item_static'),
 
     # Page to create a new Article
     url(r'^article_new/$', ArticleNewView, name='article_new'),

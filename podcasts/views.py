@@ -75,6 +75,33 @@ def pub_item(request, pub_item_id='1'):
                'l_stories': l_stories}
     return render(request, 'pub_item.html', context)
 
+# *************  View to publish a static version of the publication ******
+def pub_item_static(request, pub_item_id='1'):
+    """ Show a single publication"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+
+    fd_static_website_root = 'static_website'
+    fd_static_website_static = 'imgs'
+
+    l_stories = []
+    for linked_news_item in l_linked_news:
+        news_story = linked_news_item.news_item_id
+        l_stories = l_stories + [news_story]
+
+    context = {'pub_item': pub_item,
+               'news_items': l_linked_news,
+               'l_stories': l_stories,
+               'static_website_root': fd_static_website_root,
+               'static_website_static': fd_static_website_static}
+
+    content = render_to_string('pub_item_static.html', context)
+    with open(fd_static_website_root + '/publication_' + pub_item_id + '.html', 'w') as static_file:
+        static_file.write(content)
+
+    return HttpResponseRedirect(reverse('podcasts:pub_item', args=[pub_item_id]))
+
+ # *****************************
 def ArticleNewView(request):
     """ Create a New Publication"""
 
