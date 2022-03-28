@@ -65,12 +65,18 @@ def pub_item(request, pub_item_id='1'):
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
 
+    fd_static_website_root = 'static_website'
+    fd_static_website_static = 'imgs'
+    b_debug_mode = True
+
     l_stories = []
     for linked_news_item in l_linked_news:
         news_story = linked_news_item.news_item_id
         l_stories = l_stories + [news_story]
 
     context = {'pub_item': pub_item,
+               'b_debug_mode': b_debug_mode,
+               'fd_static_website_root': fd_static_website_root,
                'news_items': l_linked_news,
                'l_stories': l_stories}
     return render(request, 'pub_item.html', context)
@@ -81,8 +87,9 @@ def pub_item_static(request, pub_item_id='1'):
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
 
-    fd_static_website_root = 'static_website'
+    fd_static_website_root = './static_website'
     fd_static_website_static = 'imgs'
+    b_debug_mode = True
 
     l_stories = []
     for linked_news_item in l_linked_news:
@@ -90,6 +97,7 @@ def pub_item_static(request, pub_item_id='1'):
         l_stories = l_stories + [news_story]
 
     context = {'pub_item': pub_item,
+               'b_debug_mode': b_debug_mode,
                'news_items': l_linked_news,
                'l_stories': l_stories,
                'static_website_root': fd_static_website_root,
