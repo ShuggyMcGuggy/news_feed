@@ -87,7 +87,7 @@ def pub_item_static(request, pub_item_id='1'):
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
 
-    fd_static_website_root = './static_website'
+    fd_static_website_root = '/app/static_website'
     fd_static_website_static = 'imgs'
     b_debug_mode = True
 
