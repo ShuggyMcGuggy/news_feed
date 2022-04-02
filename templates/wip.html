@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1> Work In Progress</h1>
+<p>Pub Item: {{ pub_item }}</p>
+<p>News Item: {{ news_item }} </p>
+<p>Form: {{ form }}</p>
+
+<div class="container-fluid p-3 ">
+    <h2>Headline</h2>
+    <form action="{% url 'podcasts:article_map_stories_link' pub_item.id news_item.id %}"
+          method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button Name='submit'>Add Entry</button
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

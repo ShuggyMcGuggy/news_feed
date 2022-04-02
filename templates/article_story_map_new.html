@@ -1,0 +1,110 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+
+    {% load static %}
+<div class="container-fluid p-2 ps-4 bg-dark text-white">
+    <h3> Publication: {{ pub_item.title }}</h3>
+</div>
+
+<div class="container-fluid p-2 ps-4 ">
+     <div class="row">
+          <section class="card mb-2">
+            <div class="row ps-2 no-gutters">
+              <div class="col-md-2  my-auto">
+                <img
+                  src="{%static 'imgs/' %}{{ pub_item.image_file}}"
+                  class="img-fluid ml-3 my-3"
+                  alt="{{ image.source_name }}"
+                  width="200"
+                  height="200"
+                />
+              </div>
+              <div class="col-md-10">
+                    <div class="card-body ml-3">
+                        <p>
+                            {% autoescape off %}
+                            {{ pub_item.description }}
+                            {% endautoescape %}
+                        </p>
+                    </div>
+              </div>
+
+                <p>
+                    <!-- link to edit the entry -->
+                    <a href="{% url 'podcasts:article_edit' pub_item.id %}"> Edit entry</a>
+                </p>
+          </section>
+    </div>
+</div>
+
+
+
+
+
+<div class="container-fluid p-2 ps-4 bg-dark text-white">
+    <h3> Linked News Stories</h3>
+</div>
+
+<!--            <p> Stories {{ l_stories }}</p>-->
+
+<div class="container-fluid p-2 ps-4 ">
+    <div class="row p-2">
+        <div class="col-md-6 p-1 border">
+            <h3>Stories Linked</h3>
+            {% for newsitem in l_stories %}
+                <section class="card mb-3">
+                    <div class="row ps-2 no-gutters">
+                      <div class="col-md-2  my-auto">
+                        <img
+                          src="{{ newsitem.image }} "
+                          class="img-fluid ml-3 my-3"
+                          alt="{{ image.source_name }}"
+                          width="100"
+                          height="100"
+                        />
+                      </div>
+                      <div class="col-md-10">
+                        <div class="card-body ml-3">
+                          <h5 class="card-item-link" ><a href="{{ newsitem.link }}" target="_blank" rel="noopener noreferrer">{{ newsitem.title }}</a></h5>
+                              <span class="fa fa-star checked"></span>
+                              <span class="fa fa-star checked"></span>
+                              <span class="fa fa-star checked"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                          <p class="card-item-source">Status: {{ newsitem.status }}  :  Source: {{ newsitem.source_name }}  :  Pub Date: {{ newsitem.pub_date }}</p>
+                        </div>
+                      </div>
+                    </div>
+                </section>
+            {% endfor %}
+        </div> <!-- End Column 1 -->
+
+        <!-- Start Column 2 -->
+        <div class="col-md-6 p-1 border">
+            <h2>Stories Available</h2>
+                {% for newsitem in l_all_news %}
+                        <section class="card mb-3">
+                    <div class="row ps-2 no-gutters">
+                      <div class="col">
+                        <div class="card-body ml-3">
+                          <h5 class="card-item-link" ><a href="{% url 'podcasts:article_map_stories_link' pub_item.id newsitem.id %}" target="_blank" rel="noopener noreferrer">{{ newsitem.title }}</a></h5>
+                          <p class="card-item-source">Status: {{ newsitem.status }}  :  Source: {{ newsitem.source_name }}  :  Pub Date: {{ newsitem.pub_date }}</p>
+                        </div>
+                      </div>
+                    </div>
+                </section>
+                {% endfor %}
+        </div> <!-- End Column 2 -->
+
+    </div> <!-- end row -->
+
+</div> <!-- End Container -->
+
+{% if b_debug_mode %}
+    <p> other data passed</p>
+    <p> All News: {{ l_all_news }} </p>
+    <p> Form: {{ form }} </p>
+{% endif %}
+
+{% endblock content %}

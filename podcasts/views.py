@@ -10,7 +10,7 @@ from dateutil import parser
 
 
 from .models import Episode, NewsItem, Publication_Stories, Publication, Status
-from .forms import NewsItemForm, ArticleForm
+from .forms import NewsItemForm, ArticleForm, PublicationStoryForm
 
 # Create your views here.
 
@@ -169,6 +169,73 @@ def ArticleEditView(request, pub_item_id='1'):
                }
     return render(request, 'article_edit.html', context)
 
+# *******************
+def ArticleMapStoriesView(request, pub_item_id='1'):
+    """ Edit an existing article"""
+    """ to enable the mapping of the article to stories"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+    l_all_news = NewsItem.objects.all()
+    b_debug_mode = True
+
+    # Gte a blank form to add the new mapping
+
+
+    if request.method != 'POST':
+        # Create empty form the first time page opened
+        form = PublicationStoryForm()
+    else:
+        form = PublicationStoryForm(data=request.POST)
+        if form.is_valid():
+            new_story_mapping = form.save(commit=False)
+            new_story_mapping.save()
+            # return HttpResponseRedirect(reverse('podcasts:publications'))
+
+    # context = {'pub_item': pub_item, 'form': form}
+    # return render(request, 'article_edit.html', context)
+
+
+    l_stories = []
+    for linked_news_item in l_linked_news:
+        news_story = linked_news_item.news_item_id
+        l_stories = l_stories + [news_story]
+
+    context = {'pub_item': pub_item,
+               'news_items': l_linked_news,
+               'l_stories': l_stories,
+               'l_all_news': l_all_news,
+               'form': form,
+               'b_debug_mode': b_debug_mode
+               }
+    return render(request, 'article_story_map_new.html', context)
+
+# *************
+def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
+    """ Link an existing article to new news story"""
+    """ to enable the mapping of the article to stories"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    link_to_story = Publication_Stories.objects.filter(publication_id=pub_item_id)
+    news_item = NewsItem.objects.get(id=news_item_id)
+    b_debug_mode = True
+
+    if request.method != 'POST':
+        # Create empty form the first time page opened
+        form = PublicationStoryForm(initial={'publication_id': pub_item_id, 'news_item_id': news_item_id})
+    else:
+        form = PublicationStoryForm(data=request.POST)
+        if form.is_valid():
+            new_story_mapping = form.save(commit=False)
+            new_story_mapping.save()
+
+    context = {'pub_item': pub_item,
+               'news_item': news_item,
+               'form': form,
+               'b_debug_mode': b_debug_mode
+               }
+
+    return render(request, 'wip.html', context)
+
+# **************
 def news_list_static(request):
     """ Show all the news items tagged to publish"""
 

@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .views import HomePageView, NewsView, PubsView,\
     pub_item, NewsNewView, ArticleNewView, ArticleEditView,\
-    pub_item_static
+    pub_item_static, ArticleMapStoriesView, ArticleMapStoryLinkNewView
 from . import views
 
 urlpatterns = [
@@ -45,6 +45,13 @@ urlpatterns = [
 
     # Page to Edit an Article
     url(r'^article_edit/(?P<pub_item_id>\d+)/$', ArticleEditView, name='article_edit'),
+
+    # Page to map an Article to stories
+    url(r'^article_map/(?P<pub_item_id>\d+)/$', ArticleMapStoriesView, name='article_map_stories'),
+
+    # Page to map an Article to stories
+    url(r'^article_map_link/(?P<pub_item_id>(\d+))/(?P<news_item_id>(\d+))/$', ArticleMapStoryLinkNewView, name='article_map_stories_link'),
+
 
     # Dummy page to load test story
     url(r'test_story/', views.load_test_story, name='load_test_story'),
