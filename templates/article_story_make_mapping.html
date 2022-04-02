@@ -1,0 +1,52 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<div class="container-fluid p-2 bg-dark text-white">
+    <h1> Make New Story Mapping</h1>
+</div>
+
+<div class="container-fluid p-2 ps-4 ">
+    <div class="row">
+        <div class="col-md-6 p-3 border">
+             <h2>Article</h2>
+           <section class="card mb-4">
+                <div class="card-body ml-3">
+                    <p>
+                        {% autoescape off %}
+                        {{ pub_item.description }}
+                        {% endautoescape %}
+                    </p>
+                </div>
+          </section>
+        </div>
+        <div class="col-md-6 p-3 border">
+            <h2>News Item to link</h2>
+           <section class="card mb-4">
+               <h3>{{ news_item.title }}</h3>
+                <div class="card-body ml-3">
+                    <p>
+                        {% autoescape off %}
+                        {{ news_item.description }}
+                        {% endautoescape %}
+                    </p>
+                </div>
+          </section>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid p-3">
+
+    <div class="container-fluid p-3 ">
+        <form action="{% url 'podcasts:article_map_stories_link' pub_item.id news_item.id %}"
+              method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button Name='submit'>Add Entry</button
+
+        </form>
+
+    </div>
+</div>
+{% endblock content %}

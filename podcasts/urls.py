@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^article_edit/(?P<pub_item_id>\d+)/$', ArticleEditView, name='article_edit'),
 
     # Page to map an Article to stories
-    url(r'^article_map/(?P<pub_item_id>\d+)/$', ArticleMapStoriesView, name='article_map_stories'),
+    url(r'^article_map_stories/(?P<pub_item_id>\d+)/$', ArticleMapStoriesView, name='article_map_stories'),
 
     # Page to map an Article to stories
     url(r'^article_map_link/(?P<pub_item_id>(\d+))/(?P<news_item_id>(\d+))/$', ArticleMapStoryLinkNewView, name='article_map_stories_link'),

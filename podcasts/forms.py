@@ -26,5 +26,8 @@ class PublicationStoryForm(forms.ModelForm):
         model = Publication_Stories
         fields = ['publication_id', 'news_item_id']
         labels = {'publication_id': 'Publication Ref: ', 'news_item_id': 'News Ref: '}
+        widgets = {'publication_id': forms.HiddenInput(),
+                   'news_item_id': forms.HiddenInput()
+                   }
 
 

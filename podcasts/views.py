@@ -233,7 +233,7 @@ def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
                'b_debug_mode': b_debug_mode
                }
 
-    return render(request, 'wip.html', context)
+    return render(request, 'article_story_make_mapping.html', context)
 
 # **************
 def news_list_static(request):
