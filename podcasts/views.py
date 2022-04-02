@@ -67,7 +67,7 @@ def pub_item(request, pub_item_id='1'):
 
     fd_static_website_root = 'static_website'
     fd_static_website_static = 'imgs'
-    b_debug_mode = True
+    b_debug_mode = False
 
     l_stories = []
     for linked_news_item in l_linked_news:
@@ -175,7 +175,7 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
     """ to enable the mapping of the article to stories"""
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
-    l_all_news = NewsItem.objects.all()
+    l_all_news = NewsItem.objects.filter(status__in=[2,3]).order_by("-pub_date")
     b_debug_mode = True
 
     # Gte a blank form to add the new mapping
