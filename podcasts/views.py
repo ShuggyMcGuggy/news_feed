@@ -175,8 +175,8 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
     """ to enable the mapping of the article to stories"""
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
-    l_all_news = NewsItem.objects.filter(status__in=[2,3]).order_by("-pub_date")
-    b_debug_mode = True
+    l_all_news = NewsItem.objects.filter(status__in=[4,5]).order_by("-pub_date")
+    b_debug_mode = False
 
     # Gte a blank form to add the new mapping
 
