@@ -87,7 +87,7 @@ def pub_item(request, pub_item_id='1'):
     return render(request, 'pub_item.html', context)
 
 # *************  View to publish a static version of the publication ******
-@login_required
+
 def pub_item_static(request, pub_item_id='1'):
     """
     Create a static page that can be saved to file and republished

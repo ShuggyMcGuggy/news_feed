@@ -5,7 +5,7 @@ from content_aggregator.settings import BASE_DIR
 
 class TestStaticPageSave(unittest.TestCase):
     def test_collect_page(self):
-        response = requests.get('https://frozen-brushlands-72168.herokuapp.com/pub_item_static/2/')
+        response = requests.get('https://frozen-brushlands-72168.herokuapp.com/pub_item_static/3/')
         print(response.status_code)
         print(BASE_DIR)
         print('******')
