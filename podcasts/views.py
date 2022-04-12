@@ -28,6 +28,7 @@ class HomePageView(ListView):
         context = super().get_context_data(**kwargs)
         context["episodes"] = Episode.objects.filter().order_by("-pub_date")[:10]
         return context
+# ***********************************
 
 class NewsView(ListView):
     """ Show a full list of all news items"""
@@ -40,6 +41,7 @@ class NewsView(ListView):
         context["newsitems"] = NewsItem.objects.filter().order_by("-pub_date")[:20]
         return context
 
+
 class NewsNewView(ListView):
     """ Show a full list of all news items"""
     template_name = "news_new.html"
@@ -51,6 +53,7 @@ class NewsNewView(ListView):
         context["newsitems"] = NewsItem.objects.filter(status=status_new[0].id).order_by("-pub_date")[:10]
         return context
 
+
 class PubsView(ListView):
     """ Show a full list of all publication items"""
     template_name = "pubs_home.html"
@@ -61,6 +64,7 @@ class PubsView(ListView):
         context["pubitems"] = Publication.objects.all()
         return context
 
+@login_required
 def pub_item(request, pub_item_id='1'):
     """ Show a single publication"""
     pub_item = Publication.objects.get(id=pub_item_id)
@@ -83,6 +87,7 @@ def pub_item(request, pub_item_id='1'):
     return render(request, 'pub_item.html', context)
 
 # *************  View to publish a static version of the publication ******
+@login_required
 def pub_item_static(request, pub_item_id='1'):
     """
     Create a static page that can be saved to file and republished
@@ -127,6 +132,7 @@ def pub_item_static(request, pub_item_id='1'):
     return render(request, 'pub_item_static.html', context)
 
  # *****************************
+@login_required
 def ArticleNewView(request):
     """ Create a New Publication"""
 
@@ -156,6 +162,7 @@ def ArticleNewView(request):
     #            'l_stories': l_stories}
     # return render(request, 'pub_item.html', context)
 
+@login_required
 def ArticleEditView(request, pub_item_id='1'):
     """ Edit an existing article"""
     """ Show a single publication"""
@@ -187,6 +194,7 @@ def ArticleEditView(request, pub_item_id='1'):
     return render(request, 'article_edit.html', context)
 
 # *******************
+@login_required
 def ArticleMapStoriesView(request, pub_item_id='1'):
     """ Edit an existing article"""
     """ to enable the mapping of the article to stories"""
@@ -227,6 +235,7 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
     return render(request, 'article_story_map_new.html', context)
 
 # *************
+@login_required
 def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
     """ Link an existing article to new news story"""
     """ to enable the mapping of the article to stories"""
@@ -253,6 +262,7 @@ def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
     return render(request, 'article_story_make_mapping.html', context)
 
 # **************
+@login_required
 def news_list_static(request):
     """ Show all the news items tagged to publish"""
 
@@ -270,6 +280,7 @@ def news_list_static(request):
 
 # **************************
 # New new item list ready for publishing with stars
+@login_required
 def news_list_star_rating(request):
     """ Show all the news items tagged to publish"""
 
