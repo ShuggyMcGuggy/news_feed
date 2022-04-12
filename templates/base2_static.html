@@ -33,25 +33,25 @@
                         <div class="col-md-8">
                             <ul class="navbar-nav">
                                   <li><
-                                    <a class="navbar-brand" href="{% url 'podcasts:home">
+                                    <a class="navbar-brand" href="{{ url_commentator}}">
                                     <img src="imgs\commentator.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
                                     </a>
                                   </li>
                                   <li class="nav-item">
-                                    <a class="nav-link active" href="{% url 'podcasts:news' %} %}">Commentator</a>
+                                    <a class="nav-link active" href="{{ url_commentator}}/news">Commentator</a>
                                   </li>
                                   <li class="nav-item dropdown">
                                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">News</a>
                                       <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{% url 'podcasts:news_new' %}">New News</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'podcasts:news' %}">All News</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_commentator}}/news_new">New News</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_commentator}}/news">All News</a></li>
                                       </ul>
                                   </li>
                                   <li class="nav-item dropdown">
-                                      <a class="nav-link dropdown-toggle" href="{% url 'podcasts:publications' %}" role="button" data-bs-toggle="dropdown">Publications</a>
+                                      <a class="nav-link dropdown-toggle" href="{{ url_commentator}}/publications" role="button" data-bs-toggle="dropdown">Publications</a>
                                       <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{% url 'podcasts:article_new' %}">New Article</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'podcasts:publications' %}">All Publications</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_commentator}}/article_new">New Article</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_commentator}}/publications">All Publications</a></li>
 
                                       </ul>
                                   </li>
@@ -65,13 +65,13 @@
                                 <!-- Login Verification -->
                                 {% if user.is_authenticated %}
                                        <p style="color:white;"> Hello, {{ user.username }} &nbsp&nbsp&nbsp
-                                <a href="{% url 'users:logout' %}">log out</a>
+                                <a href="{{ url_commentator}}/logout">log out</a>
                                        </p>
                                 {% else %}
                            <p>
-                                <a href="{% url 'users:register' %}">register</a>
+                                <a href="{{ url_commentator}}/register">register</a>
                                 &nbsp&nbsp
-                                <a href="{% url 'users:login' %}">log in</a>
+                                <a href="{{ url_commentator}}/login">log in</a>
                                 {% endif %}
                            </p>
                        </div>

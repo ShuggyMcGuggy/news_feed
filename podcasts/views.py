@@ -100,6 +100,7 @@ def pub_item_static(request, pub_item_id='1'):
 
     # fd_static_website_root = '/app/static_website'
     fd_static_website_root = str(BASE_DIR) + '//static_website'
+    url_commentator = 'https://frozen-brushlands-72168.herokuapp.com/'
 
     fd_static_website_static = 'imgs'
     b_debug_mode = True
@@ -114,7 +115,9 @@ def pub_item_static(request, pub_item_id='1'):
                'news_items': l_linked_news,
                'l_stories': l_stories,
                'static_website_root': fd_static_website_root,
-               'static_website_static': fd_static_website_static}
+               'static_website_static': fd_static_website_static,
+               'url_commentator': url_commentator
+               }
 
     content = render_to_string('pub_item_static.html', context)
     # with open(fd_static_website_root + '/publication_' + pub_item_id + '.html', 'w') as static_file:
