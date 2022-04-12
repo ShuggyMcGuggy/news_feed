@@ -11,6 +11,7 @@ from dateutil import parser
 
 from .models import Episode, NewsItem, Publication_Stories, Publication, Status
 from .forms import NewsItemForm, ArticleForm, PublicationStoryForm
+from content_aggregator.settings import BASE_DIR
 
 # Create your views here.
 
@@ -83,11 +84,23 @@ def pub_item(request, pub_item_id='1'):
 
 # *************  View to publish a static version of the publication ******
 def pub_item_static(request, pub_item_id='1'):
-    """ Show a single publication"""
+    """
+    Create a static page that can be saved to file and republished
+    Key element is the need to change the hyperlinks to relative links for the website
+
+    images to be held in ./imgs
+    references to home page to be change to website
+
+    This is handled by passing the links as context variables
+    and loading them with the {{ }} template Construct
+
+    """
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
 
-    fd_static_website_root = '/app/static_website'
+    # fd_static_website_root = '/app/static_website'
+    fd_static_website_root = str(BASE_DIR) + '//static_website'
+
     fd_static_website_static = 'imgs'
     b_debug_mode = True
 
@@ -104,10 +117,11 @@ def pub_item_static(request, pub_item_id='1'):
                'static_website_static': fd_static_website_static}
 
     content = render_to_string('pub_item_static.html', context)
-    with open(fd_static_website_root + '/publication_' + pub_item_id + '.html', 'w') as static_file:
-        static_file.write(content)
+    # with open(fd_static_website_root + '/publication_' + pub_item_id + '.html', 'w') as static_file:
+    #     static_file.write(content)
 
-    return HttpResponseRedirect(reverse('podcasts:pub_item', args=[pub_item_id]))
+    # return HttpResponseRedirect(reverse('podcasts:pub_item', args=[pub_item_id]))
+    return render(request, 'pub_item_static.html', context)
 
  # *****************************
 def ArticleNewView(request):
