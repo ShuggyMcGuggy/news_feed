@@ -172,7 +172,7 @@ if os.getcwd() == '/app':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # Allow all host headers.
-    ALLOWED_HOSTS = ['https://frozen-brushlands-72168.herokuapp.com/']
+    ALLOWED_HOSTS = ['https://frozen-brushlands-72168.herokuapp.com']
 
     DEBUG = False
 
