@@ -174,7 +174,7 @@ if os.getcwd() == '/app':
     # Allow all host headers.
     ALLOWED_HOSTS = ['frozen-brushlands-72168.herokuapp.com']
 
-    DEBUG = True
+    DEBUG = False
 
     # Static asset configuration...
     # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
