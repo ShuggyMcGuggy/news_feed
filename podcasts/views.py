@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
+
 
 from dateutil import parser
 
@@ -61,10 +62,11 @@ class PubsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["pubitems"] = Publication.objects.all()
+        # context["pubitems"] = Publication.objects.all()
+        context["pubitems"] = Publication.objects.filter(owner=self.request.user).order_by('date_added')
         return context
 
-@login_required
+# All users can read a published item if they have the link
 def pub_item(request, pub_item_id='1'):
     """ Show a single publication"""
     pub_item = Publication.objects.get(id=pub_item_id)
@@ -133,6 +135,7 @@ def pub_item_static(request, pub_item_id='1'):
 
  # *****************************
 @login_required
+# Only registered users can create new articles
 def ArticleNewView(request):
     """ Create a New Publication"""
 
@@ -144,6 +147,7 @@ def ArticleNewView(request):
         form = ArticleForm(data=request.POST)
         if form.is_valid():
             new_article = form.save(commit=False)
+            new_article.owner = request.user
             new_article.save()
             return HttpResponseRedirect(reverse('podcasts:publications'))
 
@@ -164,10 +168,14 @@ def ArticleNewView(request):
 
 @login_required
 def ArticleEditView(request, pub_item_id='1'):
-    """ Edit an existing article"""
+    """ Edit an existing article
+    Only the owner of the article can edit the article
+    """
     """ Show a single publication"""
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+    if pub_item.owner != request.user:
+        raise Http404
 
     if request.method != 'POST':
         form = ArticleForm(instance=pub_item )
@@ -196,7 +204,8 @@ def ArticleEditView(request, pub_item_id='1'):
 # *******************
 @login_required
 def ArticleMapStoriesView(request, pub_item_id='1'):
-    """ Edit an existing article"""
+    """ Edit an existing article
+    Only registed users can map stories to articles"""
     """ to enable the mapping of the article to stories"""
     pub_item = Publication.objects.get(id=pub_item_id)
     l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
@@ -237,7 +246,9 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
 # *************
 @login_required
 def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
-    """ Link an existing article to new news story"""
+    """ Link an existing article to new news story
+    only registered users can map an articel to a story
+    """
     """ to enable the mapping of the article to stories"""
     pub_item = Publication.objects.get(id=pub_item_id)
     link_to_story = Publication_Stories.objects.filter(publication_id=pub_item_id)
