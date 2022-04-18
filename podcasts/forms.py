@@ -13,13 +13,18 @@ class ArticleForm(forms.ModelForm):
         model = Publication
         fields = [ 'title',
                    'description',
-                   'image_file'
+                   'image_file',
+                   'image_source'
                    ]
         labels = { 'title': '',
                    'description': '',
-                   'image_file': 'File name in static/img directory'
+                   'image_file': 'File name in static/img directory',
+                   'image_source': 'Photo Credit'
                    }
-        widgets = {'description': forms.Textarea(attrs={'cols': 80})}
+        widgets = {'description': forms.Textarea(attrs={'cols': 80}),
+                   'image_source': forms.TextInput(attrs={'size':'50', 'class':'inputText'}),
+                   'image_file': forms.TextInput(attrs={'size':'33', ' class ':'inputText'})
+                   }
 # **************************************
 class PublicationStoryForm(forms.ModelForm):
     class Meta:
