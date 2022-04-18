@@ -197,6 +197,5 @@ if os.getcwd() == '/app':
     STATIC_URL = 'staticfiles/'
 
     STATICFILES_DIRS = (
-        # os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'content_aggregator/static')
+        os.path.join(BASE_DIR, 'static'),
     )
