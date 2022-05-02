@@ -3,7 +3,9 @@ from django.conf.urls import url
 
 from .views import HomePageView, NewsView, PubsView,\
     pub_item, NewsNewView, ArticleNewView, ArticleEditView,\
-    pub_item_static, ArticleMapStoriesView, ArticleMapStoryLinkNewView
+    pub_item_static, ArticleMapStoriesView, ArticleMapStoryLinkNewView, \
+    PageExportEditView, page_export
+
 from . import views
 
 urlpatterns = [
@@ -37,7 +39,7 @@ urlpatterns = [
     # url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item.as_view(), name='pub_item'),
     url(r'^pub_item/(?P<pub_item_id>\d+)/$', pub_item, name='pub_item'),
 
-    # URL to generate a static YTML page for a single publication
+    # URL to generate a static HTML page for a single publication
     url(r'^pub_item_static/(?P<pub_item_id>\d+)/$', pub_item_static, name='pub_item_static'),
 
     # Page to create a new Article
@@ -52,6 +54,12 @@ urlpatterns = [
     # Page to map an Article to stories
     url(r'^article_map_link/(?P<pub_item_id>(\d+))/(?P<news_item_id>(\d+))/$', ArticleMapStoryLinkNewView, name='article_map_stories_link'),
 
+    # Detail page for a single page export item
+    url(r'^page_export/(?P<page_export_id>\d+)/$', views.page_export, name='page_export_item'),
+
+    # Page to view the page export criterion
+    url(r'^page_export_edit/(?P<page_export_id>\d+)/$', PageExportEditView,
+        name='page_export_edit'),
 
     # Dummy page to load test story
     url(r'test_story/', views.load_test_story, name='load_test_story'),

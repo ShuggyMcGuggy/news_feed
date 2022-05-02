@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Episode, NewsItem, Status, Publication, Publication_Stories
+from .models import Episode, NewsItem, Status, Publication, Publication_Stories, PageExport
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
@@ -22,3 +22,7 @@ class StatusAdmin(admin.ModelAdmin):
 @admin.register(Publication_Stories)
 class StatusAdmin(admin.ModelAdmin):
     list_display = ("publication_id", "news_item_id", "date_added")
+
+@admin.register(PageExport)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "date_added")

@@ -10,9 +10,11 @@ from django.template.loader import render_to_string
 from dateutil import parser
 
 
-from .models import Episode, NewsItem, Publication_Stories, Publication, Status
+from .models import Episode, NewsItem, Publication_Stories, Publication, Status, PageExport
 from .forms import NewsItemForm, ArticleForm, PublicationStoryForm
 from content_aggregator.settings import BASE_DIR
+
+from src.html_export import export_page
 
 # Create your views here.
 
@@ -332,6 +334,7 @@ def news_item(request, news_item_id='1'):
 
 
     return render(request, 'news_item.html', context)
+
 @login_required
 def edit_news_item(request, news_item_id='1'):
     """ Edit an existing news item"""
@@ -368,3 +371,39 @@ def load_test_story(request):
         newsitem.save()
     return render(request, 'load_test_story.html')
 
+# **************************
+@login_required
+def page_export(request, page_export_id='1'):
+    """ Show a single news item"""
+    page_export = PageExport.objects.get(id=page_export_id)
+    context = {'page_export': page_export}
+
+    # Call the source page using request to the source page using the static template
+    # Passing the local directory refrences fro use in the template and save locally
+    export_page(page_export.source_page_url, page_export.local_file)
+
+
+    # Save the con
+
+    return render(request, 'page_export.html', context)
+
+# ***************************
+
+@login_required
+def PageExportEditView(request, page_export_id='1'):
+    """ Edit an existing article
+    Only the owner of the article can edit the article
+    """
+    """ Show a single publication"""
+    pub_item = Publication.objects.get(id=pub_item_id)
+    l_linked_news = Publication_Stories.objects.filter(publication_id=pub_item_id)
+    if pub_item.owner != request.user:
+        raise Http404
+
+    if request.method != 'POST':
+        form = ArticleForm(instance=pub_item )
+    else:
+        form = ArticleForm(instance=pub_item, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('podcasts:publications'))

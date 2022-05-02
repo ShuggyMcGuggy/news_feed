@@ -89,3 +89,23 @@ class Publication_Stories(models.Model):
 
     def __str__(self) -> str:
         return f" Pub ID: {self.publication_id} News ID: {self.news_item_id}"
+
+class PageExport(models.Model):
+    """ data to enable export of a commentator page to HTML
+    for static republishing"""
+    EXPORT_CHOICES = [
+        ('Local', 'Local'),
+        ('Dropbox', 'Dropbox'),
+        ('FTP', 'FTP'),
+    ]
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    export_type = models.CharField(max_length=512, choices=EXPORT_CHOICES, default='Local')
+    source_page_url = models.URLField(max_length=300)
+    target_page_url = models.URLField(max_length=300,blank=True)
+    local_dir = models.CharField(max_length=200, blank=True)
+    local_file = models.CharField(max_length=200, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f" Export ID: {self.id} Title: {self.title}"
