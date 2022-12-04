@@ -171,7 +171,8 @@ class Command(BaseCommand):
         scheduler.add_job(
             fetch_scaledagilefrmework_news_items,
             trigger="interval",
-            date=2,
+            #date=2,
+            minutes=2,
             id="Scaled Agile Framework Feed",
             max_instances=1,
             replace_existing=True,
