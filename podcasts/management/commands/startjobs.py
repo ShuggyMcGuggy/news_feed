@@ -40,11 +40,13 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
 Using Boolean flags to control which of the feeds is live
 '''
 
-b_scaled_agile_framework = False
+b_scaled_agile_framework = True
 b_101ways = True
-b_agile_alliance = False
-b_leadinagile_news = False
+b_agile_alliance = True
+b_leadinagile_news = True
 b_ESG_News = True
+
+int_mins = 60
 
 
 # For testing, the method for recovery is to just delete the last few entries in the database and then re-run
@@ -157,7 +159,7 @@ def handle(self, *args, **options):
     scheduler.add_job(
         fetch_realpython_episodes,
         trigger="interval",
-        minutes=2,
+        minutes= int_mins,
         id="The Real Python Podcast",
         max_instances=1,
         replace_existing=True,
@@ -201,7 +203,7 @@ class Command(BaseCommand):
                 fetch_ESG_News_episodes,
                 trigger="interval",
                 #date=2,
-                minutes=2,
+                minutes=int_mins,
                 id="ESG News Feed",
                 max_instances=1,
                 replace_existing=True,
@@ -213,7 +215,7 @@ class Command(BaseCommand):
                 fetch_scaledagilefrmework_news_items,
                 trigger="interval",
                 #date=2,
-                minutes=2,
+                minutes=int_mins,
                 id="Scaled Agile Framework Feed",
                 max_instances=1,
                 replace_existing=True,
@@ -224,7 +226,7 @@ class Command(BaseCommand):
             scheduler.add_job(
                 fetch_101ways_news_items,
                 trigger="interval",
-                minutes=2,
+                minutes=int_mins,
                 id="101 Ways  Feed",
                 max_instances=1,
                 replace_existing=True,
@@ -235,7 +237,7 @@ class Command(BaseCommand):
             scheduler.add_job(
                 fetch_agile_alliance_news_items,
                 trigger="interval",
-                minutes=2,
+                minutes=int_mins,
                 id="Agile Alliance Feed",
                 max_instances=1,
                 replace_existing=True,
@@ -246,7 +248,7 @@ class Command(BaseCommand):
             scheduler.add_job(
                 fetch_leadinagile_news_items,
                 trigger="interval",
-                minutes=2,
+                minutes=int_mins,
                 id="Lead In Agile feed",
                 max_instances=1,
                 replace_existing=True,
