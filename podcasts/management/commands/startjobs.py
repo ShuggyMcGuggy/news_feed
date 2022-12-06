@@ -46,7 +46,7 @@ b_agile_alliance = True
 b_leadinagile_news = True
 b_ESG_News = True
 
-int_mins = 60
+int_mins = 4
 
 
 # For testing, the method for recovery is to just delete the last few entries in the database and then re-run
