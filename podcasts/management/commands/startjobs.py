@@ -27,6 +27,7 @@ url_scaled_agile = "http://www.scaledagileframework.com/feed/"
 url_101ways = "https://www.101ways.com/feed/"
 url_agile_alliance = "https://www.agilealliance.org/feed"
 url_leadinagile = "https://www.leadingagile.com/blog/feed/"
+url_ESG_News = "https://www.esgtoday.com/feed/"
 
 
 l_urls_rss_feeds =['https://www.agilealliance.org/feed',
@@ -34,6 +35,24 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
     'https://www.agil8.com/feed/',
     'https://www.scrumexpert.com/feed/'
     ]
+# ------------------------------------------
+''' This section cover the environment vairables to control data feeds
+Using Boolean flags to control which of the feeds is live
+'''
+
+b_scaled_agile_framework = False
+b_101ways = True
+b_agile_alliance = False
+b_leadinagile_news = False
+b_ESG_News = True
+
+
+# For testing, the method for recovery is to just delete the last few entries in the database and then re-run
+# One option might be to use a test database and provide functions to clear this down afterwards.
+
+
+#--------------
+
 
 def save_new_episodes(feed):
     """Saves new episodes to the database.
@@ -46,6 +65,7 @@ def save_new_episodes(feed):
     """
     podcast_title = feed.channel.title
     podcast_image = feed.channel.image["href"]
+    #podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
 
     for item in feed.entries:
         if not Episode.objects.filter(guid=item.guid).exists():
@@ -88,6 +108,12 @@ def save_new_news_items(feed):
             newsitem.save()
 
 # The **** fetch functions to be scheduled for each feed ******
+
+def fetch_ESG_News_episodes():
+    """Fetches new episodes from RSS for The Real Python Podcast."""
+    _feed = feedparser.parse(requests.get(url_ESG_News, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    save_new_news_items(_feed)
+
 def fetch_realpython_episodes():
     """Fetches new episodes from RSS for The Real Python Podcast."""
     _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
@@ -148,6 +174,8 @@ class Command(BaseCommand):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
+
+
         # scheduler.add_job(
         #     fetch_realpython_episodes,
         #     trigger="interval",
@@ -168,51 +196,71 @@ class Command(BaseCommand):
         # )
         # logger.info("Added job: Talk Python Feed.")
 
-        scheduler.add_job(
-            fetch_scaledagilefrmework_news_items,
-            trigger="interval",
-            #date=2,
-            minutes=2,
-            id="Scaled Agile Framework Feed",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job: Scaled Agile Framework Feed.")
+        if b_ESG_News == True:
+            scheduler.add_job(
+                fetch_ESG_News_episodes,
+                trigger="interval",
+                #date=2,
+                minutes=2,
+                id="ESG News Feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: ESG News Feed.")
 
-        scheduler.add_job(
-            fetch_101ways_news_items,
-            trigger="interval",
-            minutes=2,
-            id="101 Ways  Feed",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job: 101 Ways Feed.")
+        if b_scaled_agile_framework == True:
+            scheduler.add_job(
+                fetch_scaledagilefrmework_news_items,
+                trigger="interval",
+                #date=2,
+                minutes=2,
+                id="Scaled Agile Framework Feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: Scaled Agile Framework Feed.")
 
-        scheduler.add_job(
-            fetch_agile_alliance_news_items,
-            trigger="interval",
-            minutes=2,
-            id="Agile Alliance Feed",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job: Agile Alliance Feed.")
+        if b_101ways == True:
+            scheduler.add_job(
+                fetch_101ways_news_items,
+                trigger="interval",
+                minutes=2,
+                id="101 Ways  Feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: 101 Ways Feed.")
 
-        scheduler.add_job(
-            fetch_leadinagile_news_items,
-            trigger="interval",
-            minutes=2,
-            id="Lead In Agile feed",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job: Lead In Agile Feed.")
+        if b_agile_alliance == True:
+            scheduler.add_job(
+                fetch_agile_alliance_news_items,
+                trigger="interval",
+                minutes=2,
+                id="Agile Alliance Feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: Agile Alliance Feed.")
 
-        scheduler.add_job(
-            delete_old_job_executions,
-            trigger=CronTrigger(
-                day_of_week="mon", hour="00", minute="00"
+        if b_leadinagile_news == True:
+            scheduler.add_job(
+                fetch_leadinagile_news_items,
+                trigger="interval",
+                minutes=2,
+                id="Lead In Agile feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: Lead In Agile Feed.")
+
+
+
+            scheduler.add_job(
+                delete_old_job_executions,
+                trigger=CronTrigger(
+                day_of_week="mon",
+                hour="00",
+                minute="00"
             ),  # Midnight on Monday, before start of the next work week.
             id="Delete Old Job Executions",
             max_instances=1,
