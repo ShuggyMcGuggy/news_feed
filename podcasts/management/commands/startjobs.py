@@ -40,10 +40,10 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
 Using Boolean flags to control which of the feeds is live
 '''
 
-b_scaled_agile_framework = False
-b_101ways = False
-b_agile_alliance = False
-b_leadinagile_news = False
+b_scaled_agile_framework = True
+b_101ways = True
+b_agile_alliance = True
+b_leadinagile_news = True
 b_ESG_News = True
 
 int_mins = 2
