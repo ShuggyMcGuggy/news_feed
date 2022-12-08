@@ -17,7 +17,7 @@ from django_apscheduler.models import DjangoJobExecution
 # import datetime
 
 # ******* Models **********
-from podcasts.models import Episode, NewsItem
+from podcasts.models import Episode, NewsItem, Status
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,8 @@ url_scaled_agile = "http://www.scaledagileframework.com/feed/"
 url_101ways = "https://www.101ways.com/feed/"
 url_agile_alliance = "https://www.agilealliance.org/feed"
 url_leadinagile = "https://www.leadingagile.com/blog/feed/"
-url_ESG_News = "https://www.esgtoday.com/feed/"
+url_ESG_News = "https://esgnews.com/feed/"
+url_esg_today = "https://www.esgtoday.com/feed/"
 
 
 l_urls_rss_feeds =['https://www.agilealliance.org/feed',
@@ -39,11 +40,13 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
 ''' This section cover the environment vairables to control data feeds
 Using Boolean flags to control which of the feeds is live
 '''
+b_bulk = False
+b_scaled_agile_framework = b_bulk
+b_101ways = b_bulk
+b_agile_alliance = b_bulk
+b_leadinagile_news = b_bulk
+b_esg_today = b_bulk
 
-b_scaled_agile_framework = True
-b_101ways = True
-b_agile_alliance = True
-b_leadinagile_news = True
 b_ESG_News = True
 
 int_mins = 2
@@ -97,6 +100,7 @@ def save_new_news_items(feed):
     # podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
     # podcast_image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     podcast_image = feed.channel.image
+    status_new = Status.objects.filter(state='New')
 
     for item in feed.entries:
         if not NewsItem.objects.filter(guid=item.guid).exists():
@@ -108,6 +112,7 @@ def save_new_news_items(feed):
                 link=item.link,
                 image=podcast_image,
                 guid=item.guid,
+                status=status_new[0],
             )
             newsitem.save()
 
@@ -116,6 +121,12 @@ def save_new_news_items(feed):
 def fetch_ESG_News_episodes():
     """Fetches new episodes from RSS for The Real Python Podcast."""
     _feed = feedparser.parse(requests.get(url_ESG_News, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+    save_new_news_items(_feed)
+
+def fetch_esg_today_episodes():
+    """Fetches new episodes from RSS for The Real Python Podcast."""
+    _feed = feedparser.parse(requests.get(url_esg_today, headers={'User-Agent': 'Mozilla/5.0'}).content)
     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/ESGToday.png"
     save_new_news_items(_feed)
 
@@ -206,6 +217,18 @@ class Command(BaseCommand):
         #     replace_existing=True,
         # )
         # logger.info("Added job: Talk Python Feed.")
+
+        if b_esg_today == True:
+            scheduler.add_job(
+                fetch_esg_today_episodes,
+                trigger="interval",
+                #date=2,
+                minutes=int_mins,
+                id="ESG Today Feed",
+                max_instances=1,
+                replace_existing=True,
+            )
+            logger.info("Added job: ESG News Feed.")
 
         if b_ESG_News == True:
             scheduler.add_job(
