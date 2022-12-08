@@ -40,13 +40,13 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
 Using Boolean flags to control which of the feeds is live
 '''
 
-b_scaled_agile_framework = True
-b_101ways = True
-b_agile_alliance = True
-b_leadinagile_news = True
+b_scaled_agile_framework = False
+b_101ways = False
+b_agile_alliance = False
+b_leadinagile_news = False
 b_ESG_News = True
 
-int_mins = 4
+int_mins = 2
 
 
 # For testing, the method for recovery is to just delete the last few entries in the database and then re-run
@@ -94,7 +94,9 @@ def save_new_news_items(feed):
     """
     source_title = feed.channel.title
     # podcast_image = feed.channel.image["https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"]
-    podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
+    # podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
+    # podcast_image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+    podcast_image = feed.channel.image
 
     for item in feed.entries:
         if not NewsItem.objects.filter(guid=item.guid).exists():
@@ -114,37 +116,44 @@ def save_new_news_items(feed):
 def fetch_ESG_News_episodes():
     """Fetches new episodes from RSS for The Real Python Podcast."""
     _feed = feedparser.parse(requests.get(url_ESG_News, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/ESGToday.png"
     save_new_news_items(_feed)
 
 def fetch_realpython_episodes():
     """Fetches new episodes from RSS for The Real Python Podcast."""
     _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_episodes(_feed)
 
 
 def fetch_talkpython_episodes():
     """Fetches new episodes from RSS for the Talk Python to Me Podcast."""
     _feed = feedparser.parse(requests.get("https://talkpython.fm/episodes/rss", headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_episodes(_feed)
 
 def fetch_scaledagilefrmework_news_items():
     """Fetches new episodes from RSS for the Scale Agile Framework RSS feed"""
     _feed = feedparser.parse(requests.get(url_scaled_agile, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_news_items(_feed)
 
 def fetch_101ways_news_items():
     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
     _feed = feedparser.parse(requests.get(url_101ways, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_news_items(_feed)
 
 def fetch_agile_alliance_news_items():
     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
     _feed = feedparser.parse(requests.get(url_agile_alliance, headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_news_items(_feed)
 
 def fetch_leadinagile_news_items():
     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
     _feed = feedparser.parse(requests.get(url_leadinagile , headers={'User-Agent': 'Mozilla/5.0'}).content)
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_news.png"
     save_new_news_items(_feed)
     return True
 
