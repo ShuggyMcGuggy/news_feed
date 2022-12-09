@@ -40,7 +40,7 @@ l_urls_rss_feeds =['https://www.agilealliance.org/feed',
 ''' This section cover the environment vairables to control data feeds
 Using Boolean flags to control which of the feeds is live
 '''
-b_bulk = False
+b_bulk = True
 b_scaled_agile_framework = b_bulk
 b_101ways = b_bulk
 b_agile_alliance = b_bulk
@@ -164,7 +164,7 @@ def fetch_agile_alliance_news_items():
 def fetch_leadinagile_news_items():
     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
     _feed = feedparser.parse(requests.get(url_leadinagile , headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_news.png"
+    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     save_new_news_items(_feed)
     return True
 
@@ -228,7 +228,7 @@ class Command(BaseCommand):
                 max_instances=1,
                 replace_existing=True,
             )
-            logger.info("Added job: ESG News Feed.")
+            logger.info("Added job: ESG Today Feed.")
 
         if b_ESG_News == True:
             scheduler.add_job(
