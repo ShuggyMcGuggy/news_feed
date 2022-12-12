@@ -49,7 +49,7 @@ b_esg_today = b_bulk
 
 b_ESG_News = True
 
-int_mins = 2
+int_mins = 4
 
 
 # For testing, the method for recovery is to just delete the last few entries in the database and then re-run
