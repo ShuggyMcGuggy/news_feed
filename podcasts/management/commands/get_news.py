@@ -14,6 +14,9 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
+
+from src.gmail import *
+
 # import datetime
 
 # ******* Models **********
@@ -202,6 +205,13 @@ class Command(BaseCommand):
         logger.info("Ran job: fetch 101ways Feed.")
         fetch_leadinagile_news_items()
         logger.info("Ran job: fetch leadinagile Feed.")
+
+        # Send email notification that job has completed
+        try:
+            send_email()
+            logger.info("Ran job: email notification")
+        except:
+            logger.info("FAILED job: email notification")
 
 
 
