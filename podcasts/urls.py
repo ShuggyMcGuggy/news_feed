@@ -32,6 +32,9 @@ urlpatterns = [
     # Edit page for the News Item
     url(r'^edit_news_item/(?P<news_item_id>\d+)/$', views.edit_news_item, name='edit_news_item'),
 
+    # Edit page for the News Item with Prev Next & Article link from
+    url(r'^edit_news_item_links/(?P<news_item_id>\d+)/$', views.edit_news_item_links, name='edit_news_item_links'),
+
     # List of all publications
     url(r'^publications/$', PubsView.as_view(), name='publications'),
 
