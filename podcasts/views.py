@@ -375,7 +375,6 @@ def edit_news_item_links(request, news_item_id='1'):
     for news_object in l_news_items:
         # print("list includes:" +str( news_object.id) + " Looking for: " + str(news_item_id))
         if str(news_object.id) == str(news_item_id):
-            #print("Found It: ID is : " + str(news_object.id))
             if counter > 0:
                 prev_news_id = l_news_items[counter - 1].id
             else:
@@ -396,7 +395,7 @@ def edit_news_item_links(request, news_item_id='1'):
         form = NewsItemForm(instance=news_item, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('podcasts:news_item', args=[news_item.id]))
+            return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
 
 
     context = {'news_item': news_item,

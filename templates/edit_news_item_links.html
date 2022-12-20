@@ -21,8 +21,8 @@
 
 <!-- Create are for the previous and next news items-->
 <div class="container-fluid p-3">
-    <h3><a href="http://127.0.0.1:8000/edit_news_item_links/{{prev_news_id}}/" >Previous News item</a></h3>
-    <h3><a href="http://127.0.0.1:8000/edit_news_item_links/{{next_news_id}}/" >Next News item</a></h3>
+    <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
+    <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
 
 </div>
 
