@@ -32,8 +32,13 @@ urlpatterns = [
     # Edit page for the News Item
     url(r'^edit_news_item/(?P<news_item_id>\d+)/$', views.edit_news_item, name='edit_news_item'),
 
-    # Edit page for the News Item with Prev Next & Article link from
+    # NEWS : Edit page for the News Item with Prev Next & Article link from
     url(r'^edit_news_item_links/(?P<news_item_id>\d+)/$', views.edit_news_item_links, name='edit_news_item_links'),
+
+    # NEWS: Edit page while passing previous and next links
+    # This URL is called after the status of the NEws item is change from NEW to another status
+    # when the PREVIOUS and NEXT item links cannot be calculated.
+    url(r'^edit_news_links_changed/(?P<news_item_id>\d+)/(?P<prev_news_id>\d+)/(?P<next_news_id>\d+)/$', views.edit_news_links_changed, name='edit_news_links_changed'),
 
     # List of all publications
     url(r'^publications/$', PubsView.as_view(), name='publications'),

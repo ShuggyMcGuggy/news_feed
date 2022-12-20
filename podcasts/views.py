@@ -395,7 +395,9 @@ def edit_news_item_links(request, news_item_id='1'):
         form = NewsItemForm(instance=news_item, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
+            # return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
+            return HttpResponseRedirect(reverse('podcasts:edit_news_links_changed',
+                                                args=[news_item.id, prev_news_id, next_news_id]))
 
 
     context = {'news_item': news_item,
@@ -403,6 +405,38 @@ def edit_news_item_links(request, news_item_id='1'):
                'prev_news_id': prev_news_id,
                'next_news_id': next_news_id}
     return render(request, 'edit_news_item_links.html', context)
+
+
+# ***** edit_news_links_changed *******
+# This view is called when the PREVIOUS and NEXT item links are specified on the URL in the GET
+# It is called when reviewing the News items with Status NEW after the statis is changed so that
+# the previous and next items can still be found.
+
+@login_required
+def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_news_id='1'):
+    """ Edit an existing news item"""
+    news_item = NewsItem.objects.get(id=news_item_id)
+
+    # filter the list by status of 3 == NEW
+    status_new = Status.objects.filter(state='New')
+    l_news_items = NewsItem.objects.filter(status=status_new[0].id).order_by("-pub_date")
+
+    if request.method != 'POST':
+        # Initial request; pre-fill the form with the current entry
+        form = NewsItemForm(instance=news_item)
+    else:
+        # POST data submitted; process data
+        form = NewsItemForm(instance=news_item, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('podcasts:edit_news_links_changed') + '/' + news_item_id + '/' + prev_news_id + '/' + next_news_id)
+
+    context = {'news_item': news_item,
+               'form': form,
+               'prev_news_id': prev_news_id,
+               'next_news_id': next_news_id}
+    return render(request, 'edit_news_item_links.html', context)
+
 
 # ***** Create a view to load a new story and test it works
 def load_test_story(request):
