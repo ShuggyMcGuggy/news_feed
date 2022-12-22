@@ -19,6 +19,46 @@
 </form>
 </div>
 
+<div class="container-fluid p-3 bg-dark text-white">
+    <div class="row">
+        <div class="col-sm-6" style="background-color:green;">
+            <form>
+                <div class="form-group">
+                    <label for="cars">Current Linked Articles:</label>
+                    </br>
+                    <select id="cars" name="cars" size="3" width="300" style="width: 300px" disabled>
+                      <option value="volvo">Green Hydrogen</option>
+                      <option value="saab">Wind Power</option>
+                      <option value="fiat">Car Charge Grids</option>
+                      <option value="audi">Carbon Offset</option>
+                      <option value="fiat">Solar Cells</option>
+                      <option value="audi">E-charging</option>
+                    </select>
+                </div>
+                 <button name="Remove">Remove from Article</button>
+            </form>
+
+        </div>
+
+        <div class="col-sm-6" style="background-color:green;">
+            <form>
+                <div class="form-group">
+                    <label for="cars">Choose an Article:</label>
+                    </br>
+                    <select id="cars" name="cars" size="4" width="300" style="width: 300px" multiple>
+                      <option value="volvo">Green Hydrogen</option>
+                      <option value="saab">Wind Power</option>
+                      <option value="fiat">Car Charge Grids</option>
+                      <option value="audi">Carbon Offset</option>
+                    </select>
+                </div>
+            </form>
+                        <button name="Add">Add to Article</button>
+        </div>
+    </div>
+
+</div>
+
 <!-- Create are for the previous and next news items-->
 <div class="container-fluid p-3">
     <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
