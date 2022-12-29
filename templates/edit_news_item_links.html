@@ -14,11 +14,38 @@
 <form action="{% url 'podcasts:edit_news_item_links' news_item.id %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
+    {{ link_form.as_p }}
+    {{ pub_link_form.as_p }}
     <button name="submit">save changes</button>
 
 </form>
 </div>
 
+<!-- Show the linked publications -->
+<div class="container-fluid p-3 bg-dark text-white">
+    <div class="row">
+        <div class="col-sm-6" style="background-color:green;">
+            <h3>Publications Linked</h3>
+            <ul>
+                {% for pubitem in l_linked_pubs %}
+                <li>{{pubitem.id}} {{pubitem.title}}</li>
+                {% endfor %}
+            </ul>
+<!--            <ul>-->
+<!--                {% for pubitem in l_links_to_pubs %}-->
+<!--                <li>{{pubitem.publication_id}}</li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+        </div>
+        <div class="col-sm-6" style="background-color:green;">
+            <h3>Publications Not Linked</h3>
+                <ul>
+                    {% for pub in l_pubs %}
+                    <li>{{pub.id}} {{pub.title}}</li>
+                    {% endfor %}
+                </ul>
+        </div>
+</div>
 <div class="container-fluid p-3 bg-dark text-white">
     <div class="row">
         <div class="col-sm-6" style="background-color:green;">
@@ -58,6 +85,8 @@
     </div>
 
 </div>
+
+
 
 <!-- Create are for the previous and next news items-->
 <div class="container-fluid p-3">

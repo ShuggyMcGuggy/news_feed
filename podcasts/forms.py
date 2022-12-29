@@ -34,5 +34,25 @@ class PublicationStoryForm(forms.ModelForm):
         widgets = {'publication_id': forms.HiddenInput(),
                    'news_item_id': forms.HiddenInput()
                    }
+# **********
+class NewsLinkPubForm(forms.ModelForm):
+    class Meta:
+        model = Publication_Stories
+        fields = ['publication_id', 'news_item_id']
+        labels = {'publication_id': 'Publication Ref: ', 'news_item_id': 'News Ref: '}
+        widgets = {'publication_id': forms.TextInput(attrs={'size':'33', ' class ':'inputText'}),
+                   'news_item_id': forms.HiddenInput()
+                   }
+
+
+# *********************
+class NewsArticleMapForm(forms.Form):
+    # The form consists of 2 selection lists
+    # One for entry removal
+    # One for adding an entry
+    article_mapping = forms.CharField()
+
+
+
 
 

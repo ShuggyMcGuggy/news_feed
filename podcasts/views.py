@@ -11,7 +11,7 @@ from dateutil import parser
 
 
 from .models import Episode, NewsItem, Publication_Stories, Publication, Status, PageExport
-from .forms import NewsItemForm, ArticleForm, PublicationStoryForm
+from .forms import NewsItemForm, ArticleForm, PublicationStoryForm, NewsArticleMapForm, NewsLinkPubForm
 from content_aggregator.settings import BASE_DIR
 
 from src.html_export import export_page
@@ -215,13 +215,15 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
     b_debug_mode = False
 
     # Gte a blank form to add the new mapping
-
+    print('first call')
 
     if request.method != 'POST':
         # Create empty form the first time page opened
-        form = PublicationStoryForm()
+        form = PublicationStoryForm(prefix='news')
+        link_form = PublicationStoryForm(prefix='link')
     else:
-        form = PublicationStoryForm(data=request.POST)
+        form = PublicationStoryForm(data=request.POST, prefix='news')
+        link_form = PublicationStoryForm(data=request.POST, prefix='link')
         if form.is_valid():
             new_story_mapping = form.save(commit=False)
             new_story_mapping.save()
@@ -241,6 +243,7 @@ def ArticleMapStoriesView(request, pub_item_id='1'):
                'l_stories': l_stories,
                'l_all_news': l_all_news,
                'form': form,
+               'link_form': form,
                'b_debug_mode': b_debug_mode
                }
     return render(request, 'article_story_map_new.html', context)
@@ -273,6 +276,7 @@ def ArticleMapStoryLinkNewView(request, pub_item_id, news_item_id):
                }
 
     return render(request, 'article_story_make_mapping.html', context)
+
 
 # **************
 @login_required
@@ -385,23 +389,49 @@ def edit_news_item_links(request, news_item_id='1'):
                 next_news_id = news_item_id
         counter = counter + 1
 
+    # Get list of all the linked items for this new item
+    l_links_to_pubs = Publication_Stories.objects.filter(news_item_id=news_item_id)
+    l_linked_pubs = []
+    for plink in l_links_to_pubs:
+        linked_pub = plink.publication_id
+        l_linked_pubs = l_linked_pubs + [linked_pub]
+
+    # l_stories = []
+    # for linked_news_item in l_linked_news:
+    #     news_story = linked_news_item.news_item_id
+    #     l_stories = l_stories + [news_story]
+
+    # Get list of all publications
+    l_pubs = Publication.objects.all()
+
 
 
     if request.method != 'POST':
         # Initial request; pre-fill the form with the current entry
-        form = NewsItemForm(instance=news_item)
+        form = NewsItemForm(instance=news_item, prefix='news')
+        link_form = NewsArticleMapForm(prefix='link')
+        pub_link_form = NewsLinkPubForm(prefix='PubLink', initial={'news_item_id': news_item_id})
+
+
     else:
         # POST data submitted; process data
-        form = NewsItemForm(instance=news_item, data=request.POST)
-        if form.is_valid():
+        form = NewsItemForm(instance=news_item, data=request.POST, prefix='news')
+        pub_link_form = NewsLinkPubForm(data=request.POST, prefix='PubLink')
+        if form.is_valid() and pub_link_form.is_valid():
             form.save()
-            # return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
-            return HttpResponseRedirect(reverse('podcasts:edit_news_links_changed',
-                                                args=[news_item.id, prev_news_id, next_news_id]))
+            print("from IS valid" )
+            print(request.POST)
+            # new_story_mapping = pub_link_form.save(commit=False)
+            pub_link_form.save()
+            return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
 
 
     context = {'news_item': news_item,
                'form': form,
+               'pub_link_form': pub_link_form,
+               'l_linked_pubs': l_linked_pubs,
+               'l_pubs': l_pubs,
+               'l_links_pubs': l_links_to_pubs,
                'prev_news_id': prev_news_id,
                'next_news_id': next_news_id}
     return render(request, 'edit_news_item_links.html', context)
@@ -423,16 +453,23 @@ def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_ne
 
     if request.method != 'POST':
         # Initial request; pre-fill the form with the current entry
-        form = NewsItemForm(instance=news_item)
+        form = NewsItemForm(instance=news_item, prefix='news')
+        link_form = NewsArticleMapForm(prefix='link')
+        pub_link_form = NewsLinkPubForm(prefix='PubLink')
     else:
         # POST data submitted; process data
-        form = NewsItemForm(instance=news_item, data=request.POST)
+        form = NewsItemForm(instance=news_item, data=request.POST, prefix='news')
+        link_form = NewsArticleMapForm(request.POST, prefix='link')
+        pub_link_form = NewsLinkPubForm(data=request.POST, prefix='Publink')
+
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('podcasts:edit_news_links_changed') + '/' + news_item_id + '/' + prev_news_id + '/' + next_news_id)
 
     context = {'news_item': news_item,
                'form': form,
+               'link_form': link_form,
+               'pub_link_form': pub_link_form,
                'prev_news_id': prev_news_id,
                'next_news_id': next_news_id}
     return render(request, 'edit_news_item_links.html', context)
