@@ -396,13 +396,19 @@ def edit_news_item_links(request, news_item_id='1'):
         linked_pub = plink.publication_id
         l_linked_pubs = l_linked_pubs + [linked_pub]
 
-    # l_stories = []
-    # for linked_news_item in l_linked_news:
-    #     news_story = linked_news_item.news_item_id
-    #     l_stories = l_stories + [news_story]
-
     # Get list of all publications
     l_pubs = Publication.objects.all()
+
+    # Get list of all non-linked publications
+    l_non_links_to_pubs = Publication_Stories.objects.exclude(news_item_id=news_item_id)
+    l_non_linked_pubs = []
+    for plink in l_non_links_to_pubs:
+        linked_pub = plink.publication_id
+        if linked_pub is not None:
+            l_non_linked_pubs = l_non_linked_pubs + [linked_pub]
+    l_unique_non_linked_pubs = list(set(l_non_linked_pubs))
+    l_non_linked_pubs = l_unique_non_linked_pubs
+
 
 
 
@@ -430,7 +436,7 @@ def edit_news_item_links(request, news_item_id='1'):
                'form': form,
                'pub_link_form': pub_link_form,
                'l_linked_pubs': l_linked_pubs,
-               'l_pubs': l_pubs,
+               'l_non_linked_pubs': l_non_linked_pubs,
                'l_links_pubs': l_links_to_pubs,
                'prev_news_id': prev_news_id,
                'next_news_id': next_news_id}

@@ -31,16 +31,11 @@
                 <li>{{pubitem.id}} {{pubitem.title}}</li>
                 {% endfor %}
             </ul>
-<!--            <ul>-->
-<!--                {% for pubitem in l_links_to_pubs %}-->
-<!--                <li>{{pubitem.publication_id}}</li>-->
-<!--                {% endfor %}-->
-<!--            </ul>-->
         </div>
         <div class="col-sm-6" style="background-color:green;">
             <h3>Publications Not Linked</h3>
                 <ul>
-                    {% for pub in l_pubs %}
+                    {% for pub in l_non_linked_pubs %}
                     <li>{{pub.id}} {{pub.title}}</li>
                     {% endfor %}
                 </ul>
