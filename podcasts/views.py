@@ -394,20 +394,40 @@ def edit_news_item_links(request, news_item_id='1'):
     l_linked_pubs = []
     for plink in l_links_to_pubs:
         linked_pub = plink.publication_id
-        l_linked_pubs = l_linked_pubs + [linked_pub]
+        if linked_pub is not None:
+            l_linked_pubs = l_linked_pubs + [linked_pub]
 
     # Get list of all publications
     l_pubs = Publication.objects.all()
 
-    # Get list of all non-linked publications
-    l_non_links_to_pubs = Publication_Stories.objects.exclude(news_item_id=news_item_id)
+    # Get list of all publications linked to other news items
+    # l_non_links_to_pubs = Publication_Stories.objects.exclude(news_item_id=news_item_id)
+    # l_non_linked_pubs = []
+    # for plink in l_non_links_to_pubs:
+    #     linked_pub = plink.publication_id
+    #     if linked_pub is not None:
+    #         l_non_linked_pubs = l_non_linked_pubs + [linked_pub]
+    # # Create list of unique publications linked to other news items
+    # l_unique_non_linked_pubs = list(set(l_non_linked_pubs))
+    # l_non_linked_pubs = l_unique_non_linked_pubs
+
+    # Create a list of all publications not linked to the news item.
+    # This is a list of all publicatoin minus the list of items currently linked
     l_non_linked_pubs = []
-    for plink in l_non_links_to_pubs:
-        linked_pub = plink.publication_id
-        if linked_pub is not None:
-            l_non_linked_pubs = l_non_linked_pubs + [linked_pub]
-    l_unique_non_linked_pubs = list(set(l_non_linked_pubs))
-    l_non_linked_pubs = l_unique_non_linked_pubs
+    for plink in l_pubs:
+        if plink not in l_linked_pubs:
+            l_non_linked_pubs.append(plink)
+
+    # print("***Linked List: ")
+    # print(l_linked_pubs)
+    # print("*** Full List")
+    # print(l_pubs)
+    # print("*** final list")
+    # print(l_final)
+
+
+
+
 
 
 
