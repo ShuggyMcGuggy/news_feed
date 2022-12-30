@@ -21,6 +21,20 @@
 </form>
 </div>
 
+<!-- Create are for the previous and next news items-->
+<div class="container-fluid p-3">
+    <div class="row">
+    <div class="col-sm-6" style="background-color:black;">
+        <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
+    </div>
+    <div class="col-sm-6" style="background-color:black;">
+        <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
+    </div>
+
+</div>
+
+</div>
+
 <!-- Show the linked publications -->
 <div class="container-fluid p-3 bg-dark text-white">
     <div class="row">
@@ -85,11 +99,6 @@
 
 
 
-<!-- Create are for the previous and next news items-->
-<div class="container-fluid p-3">
-    <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
-    <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
 
-</div>
 
 {% endblock content %}
