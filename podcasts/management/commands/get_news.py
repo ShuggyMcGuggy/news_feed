@@ -20,7 +20,7 @@ from src.gmail import *
 # import datetime
 
 # ******* Models **********
-from podcasts.models import Episode, NewsItem, Status
+from podcasts.models import Episode, NewsItem, Status, RSS_feed
 
 logger = logging.getLogger(__name__)
 
@@ -61,33 +61,19 @@ int_mins = 4
 
 #--------------
 
+# **** Function to read all the RSS Feed entries from the RSS_Feed Table
+def collect_live_rss_feeds():
+    for rss_item in RSS_feed.objects.all():
+        """Fetches new episodes from RSS for the live feeds"""
+        _feed = feedparser.parse(requests.get(rss_item.feed_url, headers={'User-Agent': 'Mozilla/5.0'}).content)
+        _feed.channel.image = rss_item.image_url
+        save_new_news_items(_feed)
+        # print("The source is: " + rss_item.source_name)
+        logger.info("Ran job: fetch: " + rss_item.source_name)
 
-def save_new_episodes(feed):
-    """Saves new episodes to the database.
 
-    Checks the episode GUID against the episodes currently stored in the
-    database. If not found, then a new `Episode` is added to the database.
 
-    Args:
-        feed: requires a feedparser object
-    """
-    podcast_title = feed.channel.title
-    podcast_image = feed.channel.image["href"]
-    #podcast_image = "https://frozen-brushlands-72168.herokuapp.com/staticfiles/imgs/agile_pm.png"
 
-    for item in feed.entries:
-        if not Episode.objects.filter(guid=item.guid).exists():
-            episode = Episode(
-                title=item.title,
-                description=item.description,
-                #pub_date=parser.parse(item.published),
-                pub_date=item.published_parsed,
-                link=item.link,
-                image=podcast_image,
-                podcast_name=podcast_title,
-                guid=item.guid,
-            )
-            episode.save()
 # *** Functions to load news feed *****
 def save_new_news_items(feed):
     """Saves new news items to the database.
@@ -179,7 +165,7 @@ def delete_old_job_executions(max_age=604_800):
 
 
 
-# ***********************  Set up command functino call *****
+# ***********************  Set up command function call *****
 class Command(BaseCommand):
     help = "Runs apscheduler."
 
@@ -205,6 +191,9 @@ class Command(BaseCommand):
         logger.info("Ran job: fetch 101ways Feed.")
         fetch_leadinagile_news_items()
         logger.info("Ran job: fetch leadinagile Feed.")
+        collect_live_rss_feeds()
+        logger.info("Ran job: Collect RSS Feeds.")
+
 
         # Send email notification that job has completed
         try:

@@ -1,6 +1,6 @@
-# Ideninty sources: pull data
+# Identity sources: pull data
 
-## Admin Accoutn
+## Admin Account
 markshury-smith
 Sack((345Boot))
 Sack((345Boot))

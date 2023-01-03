@@ -109,3 +109,18 @@ class PageExport(models.Model):
 
     def __str__(self) -> str:
         return f" Export ID: {self.id} Title: {self.title}"
+
+# *************************
+
+class RSS_feed(models.Model):
+    source_name = models.CharField(max_length=100, default=' ')
+    feed_url = models.URLField()
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    last_pub_date = models.DateTimeField()
+    image_url = models.URLField()
+    is_live = models.BooleanField()
+    total_publications = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.source_name}: {self.image_url} : {self.is_live}"
