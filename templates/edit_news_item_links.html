@@ -5,33 +5,51 @@
 
 {% block content %}
 <div class="container-fluid p-3 bg-dark text-white"
-<h1> Edit News Item</h1>
+    <h1> Edit News Item</h1>
 </div>
-<div class="container-fluid p-3"
-<h3><a href="{{news_item.link}}" target="_blank" rel="noopener noreferrer">Link: {{ news_item.title }}</a></h3>
 
-<h3>Synposis of the News item</h3>
-<form action="{% url 'podcasts:edit_news_item_links' news_item.id %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    {{ link_form.as_p }}
-    {{ pub_link_form.as_p }}
-    <button name="submit">save changes</button>
+<div class="container-fluid p-3">
+    <div class="row">
+        <div class="col-sm-6" >
+            <h3><a href="{{news_item.link}}" target="_blank" rel="noopener noreferrer">Link: {{ news_item.title }}</a></h3>
 
-</form>
+            <h3>Synposis of the News item</h3>
+            <form action="{% url 'podcasts:edit_news_item_links' news_item.id %}" method='post'>
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ link_form.as_p }}
+                {{ pub_link_form.as_p }}
+                <h2>Select Source</h2>
+                    <select name="dropdown">
+                          <option value="dsc">Low Code Daily</option>
+                          <option value="asc">Mendix</option>
+                          <option value="esc">ESG Daily</option>
+                          <option value="fsc">ESG Today</option>
+                      </select>
+                </br>
+                </br>
+                <button name="submit">save changes</button>
+            </form>
+        </div>
+
+
+
+
+
+    </div>
+
 </div>
 
 <!-- Create are for the previous and next news items-->
 <div class="container-fluid p-3">
     <div class="row">
-    <div class="col-sm-6" style="background-color:black;">
-        <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
+        <div class="col-sm-6" style="background-color:black;">
+            <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
+        </div>
+        <div class="col-sm-6" style="background-color:black;">
+            <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
+        </div>
     </div>
-    <div class="col-sm-6" style="background-color:black;">
-        <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
-    </div>
-
-</div>
 
 </div>
 

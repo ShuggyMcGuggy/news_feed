@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import Episode
+from .models import Episode, NewsItem, Status
 from django.urls.base import reverse
+from datetime import datetime
 
 from .management.commands.startjobs import fetch_leadinagile_news_items
 
@@ -46,9 +47,39 @@ from .management.commands.startjobs import fetch_leadinagile_news_items
     #     self.assertContains(response, "My Awesome Podcast Episode")
 
 class News_gather(TestCase):
+    fixtures = ["./test/test_fixtures/status.json",
+                "./test/test_fixtures/newsitem.json"
+                ]
+    def setUp(self):
+            self.news_item = NewsItem.objects.create(
+                source_name="Test Source",
+            title = "My Title",
+            description = "My Description",
+            pub_date = datetime.now(),
+            link = "https://pling.com",
+            image = "https://image.com",
+            podcast_name = "podcast name",
+            guid = "1",
+            comment = "My Comment",
+            status = Status.objects.last(),
+            star_rating = 5
+            )
+
+    def test_should_create_status_list(self):
+        len_status = len(Status.objects.all())
+        self.assertEqual(len_status, 4, "Status Table incorrect number of entries")
+
     def test_home_page_status_code(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
 
+
+    def test_kwargs_filter_news(self):
+        len_news = len(NewsItem.objects.all())
+        print("the number of news item: " + str(len_news))
+        self.assertNotEqual(len_news, 0, "The list is empty")
+        kwargs = {"source_name": "The Low-code daily"}
+        l_newsitems = NewsItem.objects.filter(**kwargs)
+        print(l_newsitems)
 
 
