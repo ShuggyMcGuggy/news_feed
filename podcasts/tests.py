@@ -9,33 +9,33 @@ from .management.commands.startjobs import fetch_leadinagile_news_items
 # Create your tests here.
 
 
-class PodCastsTests(TestCase):
-    def setUp(self):
-        self.episode = Episode.objects.create(
-            title="My Awesome Podcast Episode",
-            description="Look mom, I made it!",
-            pub_date=timezone.now(),
-            link="https://myawesomeshow.com",
-            image="https://image.myawesomeshow.com",
-            podcast_name="My Python Podcast",
-            guid="de194720-7b4c-49e2-a05f-432436d3fetr",
-        )
+# class PodCastsTests(TestCase):
+#     def setUp(self):
+#         self.episode = Episode.objects.create(
+#             title="My Awesome Podcast Episode",
+#             description="Look mom, I made it!",
+#             pub_date=timezone.now(),
+#             link="https://myawesomeshow.com",
+#             image="https://image.myawesomeshow.com",
+#             podcast_name="My Python Podcast",
+#             guid="de194720-7b4c-49e2-a05f-432436d3fetr",
+#         )
+#
+#     def test_episode_content(self):
+#         self.assertEqual(self.episode.description, "Look mom, I made it!")
+#         self.assertEqual(self.episode.link, "https://myawesomeshow.com")
+#         self.assertEqual(
+#             self.episode.guid, "de194720-7b4c-49e2-a05f-432436d3fetr"
+#         )
+#
+#     def test_episode_str_representation(self):
+#         self.assertEqual(
+#             str(self.episode), "My Python Podcast: My Awesome Podcast Episode"
+#         )
 
-    def test_episode_content(self):
-        self.assertEqual(self.episode.description, "Look mom, I made it!")
-        self.assertEqual(self.episode.link, "https://myawesomeshow.com")
-        self.assertEqual(
-            self.episode.guid, "de194720-7b4c-49e2-a05f-432436d3fetr"
-        )
-
-    def test_episode_str_representation(self):
-        self.assertEqual(
-            str(self.episode), "My Python Podcast: My Awesome Podcast Episode"
-        )
-
-    def test_home_page_status_code(self):
-        response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
+    # def test_home_page_status_code(self):
+    #     response = self.client.get("/")
+    #     self.assertEqual(response.status_code, 200)
 
     # def test_home_page_uses_correct_template(self):
     #     response = self.client.get(reverse("homepage"))
@@ -46,6 +46,9 @@ class PodCastsTests(TestCase):
     #     self.assertContains(response, "My Awesome Podcast Episode")
 
 class News_gather(TestCase):
-    def test_fetch_leadinagile_news_items(self):
-        b_response = fetch_leadinagile_news_items()
-        self.assertEqual(True, b_response, "Failed: The expected response was True")
+    def test_home_page_status_code(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+
+
+

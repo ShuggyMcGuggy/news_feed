@@ -63,7 +63,7 @@ int_mins = 4
 
 # **** Function to read all the RSS Feed entries from the RSS_Feed Table
 def collect_live_rss_feeds():
-    for rss_item in RSS_feed.objects.all():
+    for rss_item in RSS_feed.objects.filter(is_live=True):
         """Fetches new episodes from RSS for the live feeds"""
         _feed = feedparser.parse(requests.get(rss_item.feed_url, headers={'User-Agent': 'Mozilla/5.0'}).content)
         _feed.channel.image = rss_item.image_url
