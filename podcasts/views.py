@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from dateutil import parser
 
 
-from .models import Episode, NewsItem, Publication_Stories, Publication, Status, PageExport
+from .models import Episode, NewsItem, Publication_Stories, Publication, Status, PageExport, RSS_feed
 from .forms import NewsItemForm, ArticleForm, PublicationStoryForm, NewsArticleMapForm, NewsLinkPubForm
 from content_aggregator.settings import BASE_DIR
 
@@ -366,6 +366,7 @@ def edit_news_item_links(request, news_item_id='1'):
     news_item = NewsItem.objects.get(id=news_item_id)
     prev_news_id = '2464'
     next_news_id = '2466'
+    rss_source = RSS_feed.objects.get(id='1')
 
     # filter the list by status of 3 == NEW
     status_new = Status.objects.filter(state='New')
@@ -418,12 +419,9 @@ def edit_news_item_links(request, news_item_id='1'):
         if plink not in l_linked_pubs:
             l_non_linked_pubs.append(plink)
 
-    # print("***Linked List: ")
-    # print(l_linked_pubs)
-    # print("*** Full List")
-    # print(l_pubs)
-    # print("*** final list")
-    # print(l_final)
+    # Get list of all the sources to populate the source select drop down
+    l_sources = RSS_feed.objects.all()
+
 
 
     if request.method != 'POST':
@@ -442,6 +440,10 @@ def edit_news_item_links(request, news_item_id='1'):
             print("from IS valid" )
             print(request.POST)
             # new_story_mapping = pub_link_form.save(commit=False)
+            # Check whether a source filter has been provided as the dropdown
+            source_selected = request.POST.get('dropdown')
+            print("The News selected is: " + source_selected)
+
             pub_link_form.save()
             # return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
             return HttpResponseRedirect(reverse('podcasts:edit_news_links_changed',
@@ -454,6 +456,8 @@ def edit_news_item_links(request, news_item_id='1'):
                'l_linked_pubs': l_linked_pubs,
                'l_non_linked_pubs': l_non_linked_pubs,
                'l_links_pubs': l_links_to_pubs,
+               'l_sources': l_sources,
+               'rss_source': rss_source,
                'prev_news_id': prev_news_id,
                'next_news_id': next_news_id}
     return render(request, 'edit_news_item_links.html', context)
@@ -501,7 +505,15 @@ def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_ne
 
     # filter the list by status of 3 == NEW
     status_new = Status.objects.filter(state='New')
-    l_news_items = NewsItem.objects.filter(status=status_new[0].id).order_by("-pub_date")
+    source_pk='1'
+    rss_source = RSS_feed.objects.get(id=source_pk)
+    if source_pk == '1':
+        # No filtering has been selected
+        l_news_items = NewsItem.objects.filter(status=status_new[0].id).order_by(
+            "-pub_date")
+    else:
+
+        l_news_items = NewsItem.objects.filter(status=status_new[0].id, source_name=rss_source.source_name).order_by("-pub_date")
 
     # Find the position matching ID in the list of news items
     # Confirm the length of the list of items
@@ -539,6 +551,9 @@ def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_ne
         if plink not in l_linked_pubs:
             l_non_linked_pubs.append(plink)
 
+    # Get list of all the sources to populate the source select drop down
+    l_sources = RSS_feed.objects.all()
+
     if request.method != 'POST':
         # Initial request; pre-fill the form with the current entry
         form = NewsItemForm(instance=news_item, prefix='news')
@@ -554,6 +569,10 @@ def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_ne
             form.save()
             print("from IS valid")
             print(request.POST)
+            # Check whether a source filter has been provided as the dropdown
+            select_source = request.POST.get('dropdown')
+            print("The News selected is: ")
+            print(select_source)
             # new_story_mapping = pub_link_form.save(commit=False)
             pub_link_form.save()
             # return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
@@ -566,9 +585,128 @@ def edit_news_links_changed(request, news_item_id='1', prev_news_id='1', next_ne
                'l_linked_pubs': l_linked_pubs,
                'l_non_linked_pubs': l_non_linked_pubs,
                'l_links_pubs': l_links_to_pubs,
+               'l_sources': l_sources,
+               'rss_source': rss_source,
                'prev_news_id': prev_news_id,
-               'next_news_id': next_news_id}
+               'next_news_id': next_news_id
+               }
     return render(request, 'edit_news_item_links.html', context)
+
+# views for filtered news
+# def edit_news_links_filtered(request, news_item_id='1', prev_news_id='1', next_news_id='1', source_pk='1'):
+    # context = {'news_item_id': news_item_id,
+    #            'prev_news_id': prev_news_id,
+    #            'next_news_id': next_news_id,
+    #            'source_pk': source_pk
+    #            }
+    # return render(request, 'edit_news_item_filtered.html', context)
+
+
+def edit_news_links_filtered(request, news_item_id='1', prev_news_id='1', next_news_id='1', source_pk='1'):
+
+    """ Edit an existing news item"""
+    news_item = NewsItem.objects.get(id=news_item_id)
+
+    # filter the list by status of 3 == NEW
+    status_new = Status.objects.filter(state='New')
+    rss_source = RSS_feed.objects.get(id=source_pk)
+    if source_pk == '1':
+        # No filtering has been selected
+        l_news_items = NewsItem.objects.filter(status=status_new[0].id).order_by(
+            "-pub_date")
+    else:
+        l_news_items = NewsItem.objects.filter(status=status_new[0].id, source_name=rss_source.source_name).order_by("-pub_date")
+
+    count_news_items = len(l_news_items)
+
+    # Find the position matching ID in the list of news items
+    # Confirm the length of the list of items
+    # If there are more than 3 items in the list, set prev and next as one before an one after
+
+    counter = 0
+    b_news_id_matched = False
+    for news_object in l_news_items:
+        # print("list includes:" +str( news_object.id) + " Looking for: " + str(news_item_id))
+        if str(news_object.id) == str(news_item_id):
+            b_news_id_matched = True
+            if counter > 0:
+                prev_news_id = l_news_items[counter - 1].id
+            else:
+                prev_news_id = news_item_id
+            if counter < (len(l_news_items) - 1):
+                next_news_id = l_news_items[counter + 1].id
+            else:
+                next_news_id = news_item_id
+        counter = counter + 1
+    if b_news_id_matched == False:
+        # The filter or changes took the news item out of the results set
+        # So set the prev to the first in the list
+        # Set the next to the second in the list
+        # If the list is empty then return to full list
+        # if there is only one entry set previous and next to the one entry
+        prev_news_id = l_news_items[0].id
+        next_news_id = l_news_items[1].id
+
+    # Get list of all the linked items for this new item
+    l_links_to_pubs = Publication_Stories.objects.filter(news_item_id=news_item_id)
+    l_linked_pubs = []
+    for plink in l_links_to_pubs:
+        linked_pub = plink.publication_id
+        if linked_pub is not None:
+            l_linked_pubs = l_linked_pubs + [linked_pub]
+
+    # Get list of all publications
+    l_pubs = Publication.objects.all()
+
+    # Create a list of all publications not linked to the news item.
+    # This is a list of all publicatoin minus the list of items currently linked
+    l_non_linked_pubs = []
+    for plink in l_pubs:
+        if plink not in l_linked_pubs:
+            l_non_linked_pubs.append(plink)
+
+    # Get list of all the sources to populate the source select drop down
+    l_sources = RSS_feed.objects.all()
+
+    if request.method != 'POST':
+        # Initial request; pre-fill the form with the current entry
+        form = NewsItemForm(instance=news_item, prefix='news')
+        link_form = NewsArticleMapForm(prefix='link')
+        pub_link_form = NewsLinkPubForm(prefix='PubLink', initial={'news_item_id': news_item_id})
+
+
+    else:
+        # POST data submitted; process data
+        form = NewsItemForm(instance=news_item, data=request.POST, prefix='news')
+        pub_link_form = NewsLinkPubForm(data=request.POST, prefix='PubLink')
+        if form.is_valid() and pub_link_form.is_valid():
+            form.save()
+            print("from IS valid")
+            print(request.POST)
+            # Check whether a source filter has been provided as the dropdown
+            select_source = request.POST.get('dropdown')
+            print("The News selected is: ")
+            print(select_source)
+            # new_story_mapping = pub_link_form.save(commit=False)
+            pub_link_form.save()
+            # return HttpResponseRedirect(reverse('podcasts:edit_news_item_links', args=[news_item.id]))
+            return HttpResponseRedirect(reverse('podcasts:edit_news_links_filtered',
+                                            args=[news_item.id, prev_news_id, next_news_id, select_source]))
+
+    context = {'news_item': news_item,
+               'form': form,
+               'pub_link_form': pub_link_form,
+               'l_linked_pubs': l_linked_pubs,
+               'l_non_linked_pubs': l_non_linked_pubs,
+               'l_links_pubs': l_links_to_pubs,
+               'l_sources': l_sources,
+               'rss_source': rss_source,
+               'prev_news_id': prev_news_id,
+               'next_news_id': next_news_id,
+               'count_news_items': count_news_items
+               }
+    return render(request, 'edit_news_item_links.html', context)
+
 
 
 # ***** Create a view to load a new story and test it works

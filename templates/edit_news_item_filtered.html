@@ -1,0 +1,20 @@
+{% extends "base2.html" %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+<div class="container-fluid p-3 bg-dark text-white"
+    <h1> Edit News Item</h1>
+</div>
+
+<div class="container-fluid p-3">
+    <h3>Synposis of the News item: {{news_item_id}}</h3>
+
+    <p>Prev ID {{prev_news_id}} Next ID {{next_news_id}}</p>
+    <p> The source ID is {{source_pk}}</p>
+
+</div>
+
+
+{% endblock content %}

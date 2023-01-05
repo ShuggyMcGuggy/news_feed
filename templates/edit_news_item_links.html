@@ -11,24 +11,31 @@
 <div class="container-fluid p-3">
     <div class="row">
         <div class="col-sm-6" >
+            <h2>Source: {{news_item.source_name}}</h2>
             <h3><a href="{{news_item.link}}" target="_blank" rel="noopener noreferrer">Link: {{ news_item.title }}</a></h3>
 
             <h3>Synposis of the News item</h3>
-            <form action="{% url 'podcasts:edit_news_item_links' news_item.id %}" method='post'>
+<!--            <form action="{% url 'podcasts:edit_news_links_changed' news_item.id prev_news_id next_news_id %}" method='post'>-->
+            <form action="{% url 'podcasts:edit_news_links_filtered' news_item.id prev_news_id next_news_id rss_source.pk %}" method='post'>
+
                 {% csrf_token %}
                 {{ form.as_p }}
                 {{ link_form.as_p }}
                 {{ pub_link_form.as_p }}
-                <h2>Select Source</h2>
+                <h4>Source Filter: </h4>
+                <p>Changes the [Previous] & [Next] News Items when you [Save Changes]</p>
                     <select name="dropdown">
-                          <option value="dsc">Low Code Daily</option>
-                          <option value="asc">Mendix</option>
-                          <option value="esc">ESG Daily</option>
-                          <option value="fsc">ESG Today</option>
+                          <option value={{rss_source.pk}} selected>{{rss_source.source_name}}</option>
+                        {% for source in l_sources %}
+                          <option value={{source.pk}}>{{source.source_name}}</option>
+                        {% endfor %}
                       </select>
                 </br>
                 </br>
                 <button name="submit">save changes</button>
+                </br>
+                </br>
+                <p><strong>Count Related News:</strong> {{count_news_items}}</p>
             </form>
         </div>
 
@@ -44,10 +51,12 @@
 <div class="container-fluid p-3">
     <div class="row">
         <div class="col-sm-6" style="background-color:black;">
-            <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>
+<!--            <h3><a href="{% url 'podcasts:edit_news_item_links' prev_news_id  %}" >Previous News item</a></h3>-->
+            <h3><a href="{% url 'podcasts:edit_news_links_filtered' prev_news_id prev_news_id next_news_id rss_source.pk %}" >Previous News item: {{prev_news_id}} </a></h3>
         </div>
         <div class="col-sm-6" style="background-color:black;">
-            <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>
+<!--            <h3><a href="{% url 'podcasts:edit_news_item_links' next_news_id  %}" >Next News item</a></h3>-->
+            <h3><a href="{% url 'podcasts:edit_news_links_filtered' next_news_id next_news_id next_news_id rss_source.pk %}" >Next News item: {{next_news_id}}</a></h3>
         </div>
     </div>
 

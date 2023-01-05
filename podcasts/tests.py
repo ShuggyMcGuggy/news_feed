@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import Episode, NewsItem, Status
+from .models import Episode, NewsItem, Status, RSS_feed
 from django.urls.base import reverse
 from datetime import datetime
-
+import requests
 from .management.commands.startjobs import fetch_leadinagile_news_items
 
 
@@ -48,7 +48,8 @@ from .management.commands.startjobs import fetch_leadinagile_news_items
 
 class News_gather(TestCase):
     fixtures = ["./test/test_fixtures/status.json",
-                "./test/test_fixtures/newsitem.json"
+                "./test/test_fixtures/newsitem.json",
+                "./test/test_fixtures/rss_feeds.json"
                 ]
     def setUp(self):
             self.news_item = NewsItem.objects.create(
@@ -81,5 +82,44 @@ class News_gather(TestCase):
         kwargs = {"source_name": "The Low-code daily"}
         l_newsitems = NewsItem.objects.filter(**kwargs)
         print(l_newsitems)
+
+    def test_urls_edit_news_links_changed(self):
+        response = self.client.get("/edit_news_links_changed/2476/2476/1")
+        self.assertEqual(response.status_code, 200)
+        result = ''
+        try:
+            result = reverse('podcasts:edit_news_links_changed',
+                args=['2476', '2476', '2476'])
+        except:
+            self.assertNotEqual(result, '', "The URL did not resolve")
+        finally:
+            self.assertEqual(result,"/edit_news_links_changed/2476/2476/2476/", "URL does not match" )
+
+    def test_urls_edit_news_links_filtered(self):
+        result = ''
+        try:
+            result = reverse('podcasts:edit_news_links_filtered',
+                args=['2476', '2476', '2476','1'])
+        except:
+            self.assertNotEqual(result, '', "The URL did not resolve")
+        finally:
+            self.assertEqual(result,"/edit_news_links_filtered/2476/2476/2476/1/", "URL does not match" )
+
+        response = self.client.get("/edit_news_links_filtered/2476/2476/2476/1/")
+        self.assertEqual(response.status_code, 200, "Client test page not correctly found")
+        my_response = requests.get(" http://127.0.0.1:8000/edit_news_links_filtered/2476/2475/2477/1/")
+        self.assertEqual(response.status_code, 200, "HTTP request Page not correctly found")
+    def test_filter_by_sourcename(self):
+        # Get the ID of the NEW Status record
+        status_new = Status.objects.filter(state='New')
+        # Get the rss_feed object for Not Filtered
+        rss_source = RSS_feed.objects.get(id='1')
+        for rss_source in RSS_feed.objects.all():
+            l_news_items = NewsItem.objects.filter(status=status_new[0].id, source_name=rss_source.source_name).order_by( "-pub_date")
+            print("Number of news items for source: " + rss_source.source_name + " is: " + str(len(l_news_items)))
+
+
+
+
 
 
