@@ -1,4 +1,6 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 from .models import Episode, NewsItem, Status, Publication, Publication_Stories, PageExport, RSS_feed
@@ -30,3 +32,17 @@ class StatusAdmin(admin.ModelAdmin):
 @admin.register(RSS_feed)
 class StatusAdmin(admin.ModelAdmin):
     list_display = ("id", "source_name", "is_live")
+
+
+# class RSS_Feed_Resource(resources.ModelResource):
+#    class Meta:
+#       model = RSS_feed
+#
+#
+# class RSS_Feed_Admin(ImportExportModelAdmin):
+#    resource_class = RSS_Feed_Resource
+#
+# admin.site.register(RSS_Feed_Resource)
+
+
+

@@ -65,11 +65,14 @@ int_mins = 4
 def collect_live_rss_feeds():
     for rss_item in RSS_feed.objects.filter(is_live=True):
         """Fetches new episodes from RSS for the live feeds"""
-        _feed = feedparser.parse(requests.get(rss_item.feed_url, headers={'User-Agent': 'Mozilla/5.0'}).content)
-        _feed.channel.image = rss_item.image_url
-        save_new_news_items(_feed)
-        # print("The source is: " + rss_item.source_name)
-        logger.info("Ran job: fetch: " + rss_item.source_name)
+        try:
+            _feed = feedparser.parse(requests.get(rss_item.feed_url, headers={'User-Agent': 'Mozilla/5.0'}).content)
+            _feed.channel.image = rss_item.image_url
+            save_new_news_items(_feed)
+            # print("The source is: " + rss_item.source_name)
+            logger.info("Ran job: fetch: " + rss_item.source_name)
+        except:
+            logger.info("JOB FAILED: fetch: " + rss_item.source_name)
 
 
 
@@ -107,55 +110,55 @@ def save_new_news_items(feed):
 
 # The **** fetch functions to be scheduled for each feed ******
 
-def fetch_ESG_News_episodes():
-    """Fetches new episodes from RSS for The Real Python Podcast."""
-    _feed = feedparser.parse(requests.get(url_ESG_News, headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_news_items(_feed)
-
-def fetch_esg_today_episodes():
-    """Fetches new episodes from RSS for The Real Python Podcast."""
-    _feed = feedparser.parse(requests.get(url_esg_today, headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/ESGToday.png"
-    save_new_news_items(_feed)
-
-def fetch_realpython_episodes():
-    """Fetches new episodes from RSS for The Real Python Podcast."""
-    _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_episodes(_feed)
-
-
-def fetch_talkpython_episodes():
-    """Fetches new episodes from RSS for the Talk Python to Me Podcast."""
-    _feed = feedparser.parse(requests.get("https://talkpython.fm/episodes/rss", headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_episodes(_feed)
-
-def fetch_scaledagilefrmework_news_items():
-    """Fetches new episodes from RSS for the Scale Agile Framework RSS feed"""
-    _feed = feedparser.parse(requests.get(url_scaled_agile, headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_news_items(_feed)
-
-def fetch_101ways_news_items():
-    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
-    _feed = feedparser.parse(requests.get(url_101ways, headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_news_items(_feed)
-
-def fetch_agile_alliance_news_items():
-    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
-    _feed = feedparser.parse(requests.get(url_agile_alliance, headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_news_items(_feed)
-
-def fetch_leadinagile_news_items():
-    """Fetches new episodes from RSS for the 101 Ways RSS feed"""
-    _feed = feedparser.parse(requests.get(url_leadinagile , headers={'User-Agent': 'Mozilla/5.0'}).content)
-    _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
-    save_new_news_items(_feed)
-    return True
+# def fetch_ESG_News_episodes():
+#     """Fetches new episodes from RSS for The Real Python Podcast."""
+#     _feed = feedparser.parse(requests.get(url_ESG_News, headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_news_items(_feed)
+#
+# def fetch_esg_today_episodes():
+#     """Fetches new episodes from RSS for The Real Python Podcast."""
+#     _feed = feedparser.parse(requests.get(url_esg_today, headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/ESGToday.png"
+#     save_new_news_items(_feed)
+#
+# def fetch_realpython_episodes():
+#     """Fetches new episodes from RSS for The Real Python Podcast."""
+#     _feed = feedparser.parse(requests.get("https://realpython.com/podcasts/rpp/feed", headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_episodes(_feed)
+#
+#
+# def fetch_talkpython_episodes():
+#     """Fetches new episodes from RSS for the Talk Python to Me Podcast."""
+#     _feed = feedparser.parse(requests.get("https://talkpython.fm/episodes/rss", headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_episodes(_feed)
+#
+# def fetch_scaledagilefrmework_news_items():
+#     """Fetches new episodes from RSS for the Scale Agile Framework RSS feed"""
+#     _feed = feedparser.parse(requests.get(url_scaled_agile, headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_news_items(_feed)
+#
+# def fetch_101ways_news_items():
+#     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+#     _feed = feedparser.parse(requests.get(url_101ways, headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_news_items(_feed)
+#
+# def fetch_agile_alliance_news_items():
+#     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+#     _feed = feedparser.parse(requests.get(url_agile_alliance, headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_news_items(_feed)
+#
+# def fetch_leadinagile_news_items():
+#     """Fetches new episodes from RSS for the 101 Ways RSS feed"""
+#     _feed = feedparser.parse(requests.get(url_leadinagile , headers={'User-Agent': 'Mozilla/5.0'}).content)
+#     _feed.channel.image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
+#     save_new_news_items(_feed)
+#     return True
 
 def delete_old_job_executions(max_age=604_800):
     """Deletes all apscheduler job execution logs older than `max_age`."""
@@ -172,25 +175,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         # scheduler.add_jobstore(DjangoJobStore(), "default")
-        try:
-            fetch_ESG_News_episodes()
-            logger.info("Ran job: fetch ESG News Feed.")
-        except:
-            logger.info("job FAILED: fetch ESG News Feed.")
-        try:
-            fetch_esg_today_episodes()
-            logger.info("Ran job: fetch esg today Feed.")
-        except:
-            logger.info("job FAILED: fetch esg today Feed.")
-        # -------------
-        fetch_scaledagilefrmework_news_items()
-        logger.info("Ran job: fetch scaledagilefrmework Feed.")
-        fetch_agile_alliance_news_items()
-        logger.info("Ran job: fetch agile_alliance Feed.")
-        fetch_101ways_news_items()
-        logger.info("Ran job: fetch 101ways Feed.")
-        fetch_leadinagile_news_items()
-        logger.info("Ran job: fetch leadinagile Feed.")
+        # try:
+        #     fetch_ESG_News_episodes()
+        #     logger.info("Ran job: fetch ESG News Feed.")
+        # except:
+        #     logger.info("job FAILED: fetch ESG News Feed.")
+        # try:
+        #     fetch_esg_today_episodes()
+        #     logger.info("Ran job: fetch esg today Feed.")
+        # except:
+        #     logger.info("job FAILED: fetch esg today Feed.")
+        # # -------------
+        # fetch_scaledagilefrmework_news_items()
+        # logger.info("Ran job: fetch scaledagilefrmework Feed.")
+        # fetch_agile_alliance_news_items()
+        # logger.info("Ran job: fetch agile_alliance Feed.")
+        # fetch_101ways_news_items()
+        # logger.info("Ran job: fetch 101ways Feed.")
+        # fetch_leadinagile_news_items()
+        # logger.info("Ran job: fetch leadinagile Feed.")
         collect_live_rss_feeds()
         logger.info("Ran job: Collect RSS Feeds.")
 
