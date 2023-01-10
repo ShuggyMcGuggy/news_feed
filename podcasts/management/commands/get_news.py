@@ -63,16 +63,19 @@ int_mins = 4
 
 # **** Function to read all the RSS Feed entries from the RSS_Feed Table
 def collect_live_rss_feeds():
+    body_text = "Data Feeds Executed: \n\n"
     for rss_item in RSS_feed.objects.filter(is_live=True):
         """Fetches new episodes from RSS for the live feeds"""
         try:
             _feed = feedparser.parse(requests.get(rss_item.feed_url, headers={'User-Agent': 'Mozilla/5.0'}).content)
             _feed.channel.image = rss_item.image_url
             save_new_news_items(_feed)
-            # print("The source is: " + rss_item.source_name)
+            body_text = body_text + "\tRan job: fetch: " + rss_item.source_name + "\n"
             logger.info("Ran job: fetch: " + rss_item.source_name)
         except:
+            body_text = body_text + "\tRan job: fetch: " + rss_item.source_name + "\n"
             logger.info("JOB FAILED: fetch: " + rss_item.source_name)
+    return body_text
 
 
 
@@ -93,6 +96,7 @@ def save_new_news_items(feed):
     # podcast_image = "https://frozen-brushlands-72168.herokuapp.com/static/imgs/agile_pm.png"
     podcast_image = feed.channel.image
     status_new = Status.objects.filter(state='New')
+
 
     for item in feed.entries:
         if not NewsItem.objects.filter(guid=item.guid).exists():
@@ -194,13 +198,14 @@ class Command(BaseCommand):
         # logger.info("Ran job: fetch 101ways Feed.")
         # fetch_leadinagile_news_items()
         # logger.info("Ran job: fetch leadinagile Feed.")
-        collect_live_rss_feeds()
+        body_text = collect_live_rss_feeds()
+        body_text = body_text + "\nRan job: Collect RSS Feeds.\n"
         logger.info("Ran job: Collect RSS Feeds.")
 
 
         # Send email notification that job has completed
         try:
-            send_email()
+            send_email(body_text)
             logger.info("Ran job: email notification")
         except:
             logger.info("FAILED job: email notification")

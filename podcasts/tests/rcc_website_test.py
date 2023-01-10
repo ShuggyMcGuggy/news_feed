@@ -1,5 +1,6 @@
 import unittest
 from selenium import webdriver
+from src.gmail import send_email
 
 import sys
 
@@ -19,13 +20,16 @@ class RCC_websiteTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_can_open_news_list(self):
+    def test_rcc_home_page(self):
         # User opens home page
         self.browser.get('https://www.royalcanoeclub.com//')
 
         # The page Title states this is the Commentator Web Site
         self.assertIn('Royal Canoe Club – The original canoe club', self.browser.title)
         # self.fail('Finish The Test')
+    def test_send_email(self):
+        return_code = send_email("RCC website is working")
+        self.assertTrue(return_code)
 
 
 if __name__ == '__main__':
