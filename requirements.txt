@@ -18,9 +18,8 @@ django-bootstrap3==21.2
 django-import-export==3.0.2
 et-xmlfile==1.1.0
 exceptiongroup==1.1.0
-feedparser
+feedparser==5.2.1
 fuzzywuzzy==0.18.0
-gnewsclient
 google==3.0.0
 gunicorn==20.1.0
 h11==0.14.0
@@ -35,7 +34,6 @@ outcome==1.2.0
 packaging==23.0
 pandas==1.3.5
 pluggy==1.0.0
-pygooglenews
 PySocks==1.7.1
 pytest==7.2.0
 pytest-django==4.5.2
