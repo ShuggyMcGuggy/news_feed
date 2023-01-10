@@ -46,6 +46,9 @@ from .management.commands.startjobs import fetch_leadinagile_news_items
     #     response = self.client.get(reverse("homepage"))
     #     self.assertContains(response, "My Awesome Podcast Episode")
 
+
+
+
 class News_gather(TestCase):
     fixtures = ["./test/test_fixtures/status.json",
                 "./test/test_fixtures/newsitem.json",

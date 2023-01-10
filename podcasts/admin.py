@@ -3,11 +3,13 @@ from django.contrib import admin
 # from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from .models import Episode, NewsItem, Status, Publication, Publication_Stories, PageExport, RSS_feed
+# from .models import Episode, NewsItem, Status, Publication, Publication_Stories, PageExport, RSS_feed
+from .models import  NewsItem, Status, Publication, Publication_Stories, PageExport, RSS_feed
 
-@admin.register(Episode)
-class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ("podcast_name", "title", "pub_date")
+
+# @admin.register(Episode)
+# class EpisodeAdmin(admin.ModelAdmin):
+#     list_display = ("podcast_name", "title", "pub_date")
 
 @admin.register(NewsItem)
 class NewsItemAdmin(admin.ModelAdmin):

@@ -3,3 +3,4 @@ __pycache__/
 *.sqlite3
 requirements-old.txt
 /static_website/publication*
+/geckodriver.log
